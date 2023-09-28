@@ -1,0 +1,511 @@
+<?php
+
+include "verifica.php";
+
+
+
+echo $_POST['mecanico'];
+
+		$id_cliente					=base64_decode($_POST["id_cliente_fr"]);
+		$id_fr						=base64_decode($_POST["id_fr"]);
+		$tipo_os  					=$_POST["tipo_os"];
+		$dadosgerais				=$_POST["dadosgerais"];
+		$solicitacoes				=$_POST["solicitacoes"];
+		$previsao					=$_POST['previsao'];	
+		$km							=$_POST['km'];	
+		//$cancelamento				=strtoupper($_POST["cancelamento"]);
+
+	//funcao para atualizar valores na ordem de servico			
+	function atualizaValorOS($numeroOS){
+		include "conexao.php";
+
+		//if($tipoOperacao=='adciona'){
+
+			//buscar valor total de servicos lancados
+			$BuscarTotalServico = $con->prepare("SELECT SUM(VAL_VALOR_SERVICO_OS) AS TOTALSERVICO, SUM(VAL_DESCONTO_SERVICO_OS) AS TOTALDESCONTOSERVICO FROM TBL_ITEM_SERVICO_OS WHERE TBL_ORDEMSERVICO_OS_NUM_ID_OS = $numeroOS");
+							
+			if(!$BuscarTotalServico->execute()){
+				return false;
+			}else{	
+				while ($rowItem = $BuscarTotalServico->fetch(PDO::FETCH_OBJ)){
+					$valorServico = $rowItem->TOTALSERVICO;
+					$valorDescontoServico = $rowItem->TOTALDESCONTOSERVICO;					
+				}
+			}
+			
+			//buscar valor total de pecas lancada
+			$buscarTotalPeca = $con->prepare("SELECT SUM(VAL_VALOR_PECA_OS) AS TOTALPECA, SUM(VAL_DESCONTO_PECA_OS) AS TOTALDESCONTOPECA FROM TBL_ITEM_PECA_OS WHERE TBL_ORDEMSERVICO_OS_NUM_ID_OS = $numeroOS");
+
+			if(!$buscarTotalPeca->execute()){
+				return false;
+			}else{
+				while ($rowItem = $buscarTotalPeca->fetch(PDO::FETCH_OBJ)){
+					$valorPeca = $rowItem->TOTALPECA;
+					$valorDescontoPeca = $rowItem->TOTALDESCONTOPECA;					
+				}
+			}
+
+				//soma de totais
+				$novoValor = $valorPeca + $valorServico;
+				$novoDesconto = $valorDescontoPeca + $valorDescontoServico;
+				$novoFinal = $novoValor - $novoDesconto;
+
+				//ATUALIZA OS VALORES NA ORDEM DE SERVICO
+				$sqlAtualizaValoresOS = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET VAL_TOTAL_OS = ?, VAL_DESCONTO_OS = ?, VAL_FINAL_OS = ? WHERE NUM_ID_OS = ?");
+				$sqlAtualizaValoresOS->bindParam(1,$novoValor);
+				$sqlAtualizaValoresOS->bindParam(2,$novoDesconto);
+				$sqlAtualizaValoresOS->bindParam(3,$novoFinal);
+				$sqlAtualizaValoresOS->bindParam(4,$numeroOS);
+
+					if(!$sqlAtualizaValoresOS->execute() ){						
+						return false;
+					}else{
+						return true;
+					}			
+
+	}
+
+include "conexao.php";
+
+$acao = $_GET['acao'];
+
+switch($acao){	
+case "cadastrar":
+	if($_POST['tipo_os']=="S"){	
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-frota.php'><script type=\"text/javascript\">alert(\"Erro no processamento das informacoes!\");</script>";		
+	}else{				
+				
+				$sqlCadastro = $con->prepare("INSERT INTO TBL_ORDEMSERVICO_OS (`TBL_FROTA_FR_NUM_ID_FR`, `TBL_CLIENTE_CLI_NUM_ID_CLI`, `TBL_EMPRESA_EMP_NUM_ID_EMP`, 
+				
+					`TBL_USUARIO_USU_NUM_ID_USU`,`TXT_TIPO_OS`, `DTH_ABERTURA_OS`,`TXT_DADOSGERAIS_OS`, `NUM_KM_OS`, `TXT_SOLICITACOES_OS`, `DTA_PREVISAO_OS`,
+											
+					`VAL_TOTAL_OS`, `VAL_DESCONTO_OS`, `VAL_FINAL_OS`, `DTH_ENCERRAMENTO_OS`, `DTA_FIMGARANTIA_OS`, `NUM_NFSE_OS`, `TXT_CANCELAMENTO_OS`,`TXT_CONDICAO_PAGAMENTO_OS`, `TXT_STATUS_OS`)
+
+					VALUES (?,?,?,?,?,now(),?,?,?,?,0,0,0,null,null,0,null,NULL,'ABERTA')"); 
+
+				$sqlCadastro->bindParam(1,$id_fr);
+				$sqlCadastro->bindParam(2,$id_cliente);
+				$sqlCadastro->bindParam(3,$empresa_usuario);				
+				$sqlCadastro->bindParam(4,$id_usuario);
+				$sqlCadastro->bindParam(5,$tipo_os);
+				$sqlCadastro->bindParam(6,$dadosgerais);
+				$sqlCadastro->bindParam(7,$km);
+				$sqlCadastro->bindParam(8,$solicitacoes);
+				$sqlCadastro->bindParam(9,$previsao);
+		
+				if(! $sqlCadastro->execute() )
+				{
+				  	die('Houve um erro no processamento da transação: ' . $sqlCadastro . mysqli_error($con));
+				}				
+				$result = $con->prepare("SELECT MAX(NUM_ID_OS) FROM TBL_ORDEMSERVICO_OS");
+				
+				if(!$result->execute()){
+						echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Registro efetuado com sucesso, Porém erro ao capturar Numero!\");</script>";	
+				}else{				
+				
+					$idosatual = $result->fetchColumn();echo $idosatual;
+						echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Registro efetuado com sucesso, numero da Ordem de Serviço: $idosatual !\");</script>";
+						$idosatual=base64_encode($idosatual);
+				}		
+}
+break;
+case "cancelaros":
+	$id_os = $_GET['os'];
+	//ATUALIZA STATUS DE OS
+		$sql_verifica_os = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$id_os' AND TXT_STATUS_OS = 'AB'");
+		$sql_verifica_os->execute();
+		if($sql_verifica_os->rowCount()<=0){
+			echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar com status ABERTO!\");</script>";	
+		}else{
+
+			$sqlCancelar = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'CA', DTA_ENCERRAMENTO_OS = now(), HOR_ENCERRAMENTO_OS = current_time(), TXT_CANCELAMENTO_OS = '$cancelamento'  WHERE NUM_ID_OS = '$id_os' and TXT_STATUS_OS = 'AB'");	
+
+			if($sqlCancelar->execute() ){
+				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Ordem de Servico cancelada com sucesso!\");</script>";	
+			}else{
+				die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+			}
+		}			
+				
+break;	
+case "salvar":
+	
+		$id = $_GET['id'];
+		$sqlSalvar = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_TIPO_ATENDIMENTO_OS = ?,TXT_TIPO_OS = ?, DTA_PREVISAO_OS = ? WHERE NUM_ID_OS = ?");
+		$sqlSalvar->bindParam(1,$tipo_atendimento);
+		$sqlSalvar->bindParam(2,$tipo_os);
+		$sqlSalvar->bindParam(3,$previsao);
+		$sqlSalvar->bindParam(4,$id);
+
+
+	if(! $sqlSalvar->execute() ){
+		die('Houve um erro no processamento da transação: ' . mysqli_error($con));}
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";				
+
+break;
+case "incluirservico":	
+
+	$id_os = $_POST['id'];
+	$id_servico = $_POST['servico'];
+
+		$buscarPreco = $con->prepare("SELECT VAL_VALOR_SER FROM TBL_SERVICO_SER WHERE NUM_ID_SER = ?");
+		$buscarPreco->bindParam(1,$id_servico);
+							
+			if(!$buscarPreco->execute()){				
+				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Erro ao incluir servico!\");</script>";				
+			}else{	
+				$precoServico = $buscarPreco->fetchColumn();
+			}		
+
+				$sqlIncluirServico = $con->prepare("INSERT INTO TBL_ITEM_SERVICO_OS (`TBL_MECANICO_MEC_NUM_ID_MEC`, `TBL_USUARIO_USU_NUM_ID_USU`, `TBL_SERVICO_SER_NUM_ID_SER`, `TBL_ORDEMSERVICO_OS_NUM_ID_OS`, 
+				
+					`DTH_INICIO_SERVICO_OS`, `DTH_FINAL_SERVICO_OS`, `VAL_VALOR_SERVICO_OS`, `VAL_DESCONTO_SERVICO_OS`, `VAL_VALOR_FINAL_SERVICO_OS`, `TXT_STATUS_SERVICO_OS`)
+													
+					VALUES (0, ?, ?, ?, null, null, ?, 0, ?, 'AGUARDANDO APROVACAO')");
+
+				$sqlIncluirServico->bindParam(1,$id_usuario);
+				$sqlIncluirServico->bindParam(2,$id_servico);
+				$sqlIncluirServico->bindParam(3,$id_os);
+				$sqlIncluirServico->bindParam(4,$precoServico);
+				$sqlIncluirServico->bindParam(5,$precoServico);
+			
+			if(! $sqlIncluirServico->execute() ){
+				die('Houve um erro no processamento da transação: ' . mysqli_error($con));				
+			}	
+			
+			$sqlAtualizaStatusOs = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'ANDAMENTO' WHERE NUM_ID_OS = '$id_os'");
+				if(!$sqlAtualizaStatusOs->execute()){
+					die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+				}
+			
+			if(atualizaValorOS($id_os )){
+				//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Servico incluido com sucesso!\");</script>";
+				$_SESSION['msg'] = "<div class='alert alert-success'>Servico incluido com sucesso!</div>"; 
+				header("Location: listagem-apontamento.php?id=$id_os");
+							
+			}else{
+				//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Erro ao incluir servico!\");</script>";
+				$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao incluir o servico!</div>"; 
+				header("Location: listagem-apontamento.php?id=$id_os");
+				
+			}
+
+break;
+case "incluirpeca":
+	
+	$id_os = $_POST['id'];
+	$id_peca = $_POST['peca'];
+	$quantidade = $_POST['quantidade'];
+
+		
+		$buscarPreco = $con->prepare("SELECT VAL_VALOR_VENDA_PEC FROM TBL_PECA_PEC WHERE NUM_ID_PEC = ?");
+		$buscarPreco->bindParam(1,$id_peca);
+							
+			if(!$buscarPreco->execute()){				
+				//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Erro ao incluir peca!\");</script>";				
+				$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao incluir peca!</div>"; 
+				header("Location: listagem-apontamento.php?id=$id_os");
+			}else{	
+				$precoPeca = $buscarPreco->fetchColumn();
+			}
+			
+			$novoPrecoPeca = $precoPeca * $quantidade;
+
+			$sqlIncluirPeca = $con->prepare("INSERT INTO TBL_ITEM_PECA_OS (`TBL_USUARIO_USU_NUM_ID_USU`, `TBL_ORDEMSERVICO_OS_NUM_ID_OS`, `TBL_PECA_PEC_NUM_ID_PEC`, 
+			
+				`NUM_QUANTIDADE_PECA_OS`, `VAL_VALOR_PECA_OS`, `VAL_DESCONTO_PECA_OS`, `VAL_FINAL_PECA_OS`, `TXT_STATUS_PECA_OS`)
+												
+				VALUES (?, ?, ?, ?, ?, 0, ?, 'AGUARDANDO APROVACAO')");
+
+			$sqlIncluirPeca->bindParam(1,$id_usuario);
+			$sqlIncluirPeca->bindParam(2,$id_os);
+			$sqlIncluirPeca->bindParam(3,$id_peca);
+			$sqlIncluirPeca->bindParam(4,$quantidade);
+			$sqlIncluirPeca->bindParam(5,$novoPrecoPeca);
+			$sqlIncluirPeca->bindParam(6,$novoPrecoPeca);
+			
+			if(! $sqlIncluirPeca->execute() ){
+				die('Houve um erro no processamento da transação: ' . mysqli_error($con));				
+			}
+
+			$sqlAtualizaStatusOs = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'ANDAMENTO' WHERE NUM_ID_OS = '$id_os'");
+				if(!$sqlAtualizaStatusOs->execute()){
+					die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+				}
+
+			if(atualizaValorOS($id_os )){
+				//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Peca incluida com sucesso!\");</script>";					
+				$_SESSION['msg'] = "<div class='alert alert-success'>Peca incluido com sucesso!</div>"; 
+				header("Location: listagem-apontamento.php?id=$id_os");
+			}else{
+				//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Erro ao incluir Peca!\");</script>";				
+				$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao incluir peca!</div>"; 
+				header("Location: listagem-apontamento.php?id=$id_os");
+			}
+
+break;
+case "aprovarservico":
+	
+	$id_item_servico = $_GET['id_item_servico'];
+	$id = $_GET['id'];
+		
+	$sql_itemservico = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET TXT_STATUS_SERVICO_OS = 'APROVADO' WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+		if(! $sql_itemservico->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+		
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Item aprovado com sucesso!\");</script>";
+		$_SESSION['msg'] = "<div class='alert alert-success'>Item aprovado com sucesso!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");
+
+break;
+case "atribuirmecanico":
+	
+	$id_item_servico = $_POST['item_servico'];
+	$id = $_POST['id_os'];
+	$mecanico = $_POST['mecanico'];
+		
+	$sql_itemservico = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET TBL_MECANICO_MEC_NUM_ID_MEC = ? WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+	$sql_itemservico->bindParam(1,$mecanico);
+		if(! $sql_itemservico->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+		
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Mecanico atribuido a servico!\");</script>";
+		$_SESSION['msg'] = "<div class='alert alert-success'>Mecanico atribuido com sucesso!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");
+
+break;
+case "iniciar":
+	
+	$id_item_servico = $_GET['id_item_servico'];
+	$id = $_GET['id'];
+		
+	$sql_itemservico = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET DTH_INICIO_SERVICO_OS = NOW(), TXT_STATUS_SERVICO_OS = 'ANDAMENTO' WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+		if(! $sql_itemservico->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+	
+	$sqlAtualizaStatusOs = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'ANDAMENTO' WHERE NUM_ID_OS = '$id'");
+		if(!$sqlAtualizaStatusOs->execute()){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+		
+	//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Item atualizado com sucesso!\");</script>";
+	$_SESSION['msg'] = "<div class='alert alert-success'>Servico iniciado com sucesso!</div>"; 
+	header("Location: listagem-apontamento.php?id=$id");
+
+break;
+case "terminar":
+	
+	$id_item_servico = $_GET['id_item_servico'];
+	$id = $_GET['id'];
+		
+	$sql_itemservico = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET DTH_FINAL_SERVICO_OS = NOW(), TXT_STATUS_SERVICO_OS = 'REALIZADO' WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+		if(! $sql_itemservico->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+		
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Item atualizado com sucesso!\");</script>";
+		$_SESSION['msg'] = "<div class='alert alert-success'>Servico encerrado com sucesso!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");
+
+break;
+
+case "removerservico":
+	
+	$id_item_servico = $_GET['id_item_servico'];
+	$id = $_GET['id'];
+		
+	$sql_itemservico = $con->prepare("DELETE FROM TBL_ITEM_SERVICO_OS  WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+		if(! $sql_itemservico->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+
+		if(atualizaValorOS($id )){
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Operacao efetuada com sucesso!\");</script>";					
+			$_SESSION['msg'] = "<div class='alert alert-success'>Servico excluido!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");
+		}else{
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";
+			$_SESSION['msg'] = "<div class='alert alert-danger'>Servico excluido, porem erro ao atualizar tabela!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");				
+		}
+		
+break;
+
+case "descontoservico":
+	
+	$id_item_servico = $_POST['item_servico'];
+	$id = $_POST['id_os'];
+	$val = $_POST['valor'];
+	$fin = $_POST['total'];
+	$desc = $_POST['desconto'];
+	
+	if($val<=$desc){
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";	
+		$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao aplicar desconto!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");	
+	}else{
+
+		$valFinal = $val - $desc;
+	
+			$sql_itemservico = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET VAL_VALOR_SERVICO_OS=?, VAL_DESCONTO_SERVICO_OS = ?, VAL_VALOR_FINAL_SERVICO_OS = ? WHERE NUM_ID_SERVICO_OS = '$id_item_servico'");
+			$sql_itemservico->bindParam(1,$val);
+			$sql_itemservico->bindParam(2,$desc);
+			$sql_itemservico->bindParam(3,$valFinal);
+			if(! $sql_itemservico->execute() ){
+				die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+			}
+	
+		if(atualizaValorOS($id)){
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Operacao efetuada com sucesso!\");</script>";					
+			$_SESSION['msg'] = "<div class='alert alert-success'>Desconto aplicado com sucesso!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");
+		}else{
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";				
+			$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao aplicar desconto!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");
+		}
+	}
+		
+break;
+
+case "descontopeca":
+	
+	$id_item_peca = $_POST['id_item_peca'];
+	$id = $_POST['id_os'];
+	$val = $_POST['valor'];
+	$fin = $_POST['total'];
+	$desc = $_POST['desconto'];
+	
+	if($val<=$desc){
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";	
+	}else{
+
+		$valFinal = $val - $desc;
+	
+			$sql_itempeca = $con->prepare("UPDATE TBL_ITEM_PECA_OS SET VAL_VALOR_PECA_OS=?, VAL_DESCONTO_PECA_OS = ?, VAL_FINAL_PECA_OS = ? WHERE NUM_ID_PECA_OS = '$id_item_peca'");
+			$sql_itempeca->bindParam(1,$val);
+			$sql_itempeca->bindParam(2,$desc);
+			$sql_itempeca->bindParam(3,$valFinal);
+			if(! $sql_itempeca->execute() ){
+				die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+			}
+	
+		if(atualizaValorOS($id)){
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Operacao efetuada com sucesso!\");</script>";
+			$_SESSION['msg'] = "<div class='alert alert-success'>Desconto aplicado com sucesso!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");					
+		}else{
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";				
+			$_SESSION['msg'] = "<div class='alert alert-danger'>Erro ao aplicar desconto!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");
+		}
+	}
+		
+break;
+
+case "aprovarpeca":
+	
+	$id_item_peca = $_GET['id_item_peca'];
+	$id = $_GET['id'];
+		
+	$sql_item_peca = $con->prepare("UPDATE TBL_ITEM_PECA_OS SET TXT_STATUS_PECA_OS = 'APROVADO' WHERE NUM_ID_PECA_OS = '$id_item_peca'");
+		if(! $sql_item_peca->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+
+		$sqlAtualizaStatusOs = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'ANDAMENTO' WHERE NUM_ID_OS = '$id'");
+		if(!$sqlAtualizaStatusOs->execute()){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+
+		$_SESSION['msg'] = "<div class='alert alert-success'>Item aprovado com sucesso!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");	
+		
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Item aprovado com sucesso!\");</script>";
+
+break;
+
+case "removerpeca":
+	
+	$id_item_peca = $_GET['id_item_peca'];
+	$id = $_GET['id'];
+		
+	$sql_itempeca = $con->prepare("DELETE FROM TBL_ITEM_PECA_OS  WHERE NUM_ID_PECA_OS = '$id_item_peca'");
+		if(! $sql_itempeca->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+
+		if(atualizaValorOS($id )){
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Operacao efetuada com sucesso!\");</script>";
+			$_SESSION['msg'] = "<div class='alert alert-success'>Item removido com sucesso!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");						
+		}else{
+			//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Erro ao efetuar operacao!\");</script>";
+			$_SESSION['msg'] = "<div class='alert alert-danger'>Item removido, porem erro ao atualizar tabela!</div>"; 
+			header("Location: listagem-apontamento.php?id=$id");					
+		}
+		
+break;
+
+case "realizadopeca":
+	
+	$id_item_peca = $_GET['id_item_peca'];
+	$id = $_GET['id'];
+		
+	$sql_item_peca = $con->prepare("UPDATE TBL_ITEM_PECA_OS SET TXT_STATUS_PECA_OS = 'REALIZADO' WHERE NUM_ID_PECA_OS = '$id_item_peca'");
+		if(! $sql_item_peca->execute() ){
+			die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+		}
+		
+		//echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id'><script type=\"text/javascript\">alert(\"Item atualizado com sucesso!\");</script>";
+		$_SESSION['msg'] = "<div class='alert alert-success'>Item realizado com sucesso!</div>"; 
+		header("Location: listagem-apontamento.php?id=$id");	
+
+break;
+case "encerraros":
+	$id_os = $_GET['idos'];
+	$statusOs = $_GET['statusOs'];
+
+		if($statusOs == 'ANDAMENTO'){		
+		
+			//verificar se existem servicos em aberto
+				$sqlStatusServicoOs = $con->prepare("SELECT * FROM `TBL_ITEM_SERVICO_OS` WHERE `TXT_STATUS_SERVICO_OS` <> 'REALIZADO' OR TBL_MECANICO_MEC_NUM_ID_MEC = 0 AND `TBL_ORDEMSERVICO_OS_NUM_ID_OS` = ?");
+				$sqlStatusServicoOs->bindParam(1,$id_os);
+				
+				if(! $sqlStatusServicoOs->execute()){
+					die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+				}else{
+					if($sqlStatusServicoOs->rowCount()>0){
+						echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Existem servicos ainda nao realizados ou sem mecanico!\");</script>";	
+					}else{
+						//verificar se existem pecas em aberto
+						$sqlStatusPecaOs = $con->prepare("SELECT * FROM `TBL_ITEM_PECA_OS` WHERE `TXT_STATUS_PECA_OS` <> 'REALIZADO' AND `TBL_ORDEMSERVICO_OS_NUM_ID_OS` = ?");
+						$sqlStatusPecaOs->bindParam(1,$id_os);
+						
+							if(! $sqlStatusPecaOs->execute()){
+								die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+							}else{
+								if($sqlStatusPecaOs->rowCount()>0){
+									echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Existem pecas ainda nao realizados!\");</script>";	
+								}else{
+									$sqlEncerraOs = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'ENCERRADA',DTH_ENCERRAMENTO_OS = now() , DTA_FIMGARANTIA_OS = DATE_ADD(CURDATE(), INTERVAL 90 DAY) WHERE NUM_ID_OS = '$id_os'");
+									if(! $sqlEncerraOs->execute()){
+										die('Houve um erro no processamento da transacao: ' . mysqli_error($con));
+									}else{
+										echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-apontamento.php'><script type=\"text/javascript\">alert(\"Ordem de Servico encerrada com sucesso!\");</script>";										
+									}//fim Ordem de servico encerrada
+								}//fim Ordem de servico nao tem pecas em andamento
+							}//fim sql de pecas executada com sucesso
+					}//fim ordem de servico com servicos em andamento
+				}//fim erro sql de servicos em aberto	
+		}else{
+			echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar em ANDAMENTO, atualmente: $statusOs!\");</script>";
+		}
+break;
+default:
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Erro ao capturar acao!\");</script>";	
+}
+?>
