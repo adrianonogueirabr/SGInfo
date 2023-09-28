@@ -1,7 +1,6 @@
 <?php
 
 include "verifica.php";
-		$_POST["cliente"];
 		$sistemaoperacional			=$_POST["sistemaoperacional"];
 		$id_cliente					=$_POST["cliente"];
 		$tipo						=$_POST["tipo"];
@@ -35,17 +34,16 @@ if($acao == "cadastrar"){
 
 	if($_POST['cliente']==""){
 	
-	echo "
-		<META HTTP-EQUIV=REFRESH CONTENT='0; URL=cadastro-equipamentos.php'><script type=\"text/javascript\">alert(\"Tente Novamente!\");</script>";
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=cadastro-equipamentos.php'><script type=\"text/javascript\">alert(\"Tente Novamente!\");</script>";
 		
 	}else{			
 		
 				$res = $con->prepare("INSERT INTO TBL_EQUIPAMENTO_EQUIP (`TBL_SISTEMAOPERACIONAL_SO_NUM_ID_SO`, `TBL_CLIENTE_CLI_NUM_ID_CLI`, `TBL_USUARIO_USU_NUM_ID_USU`, 
 									`TXT_TIPO_EQUIP`, `TXT_SETOR_EQUIP`, `TXT_NOMEREDE_EQUIP`, `TXT_DESCRICAO_EQUIP`, `TXT_LOGIN_EQUIP`, `TXT_SENHA_EQUIP`, `TXT_UTILIZADORES_EQUIP`, 
-									`NUM_HD_EQUIP`, `TXT_TIPOARMAZENAMENTO_EQUIP`,`TXT_PROCESSADOR_EQUIP`, `NUM_MEMORIA_EQUIP`,`TXT_TIPOMEMORIA_EQUIP`, `TXT_PLACAMAE_EQUIP`, `TXT_MONITOR_EQUIP`, `TXT_APLICATIVOS_EQUIP`, `NUM_NFE_EQUIP`, 
-									`DTA_REGISTRO_EQUIP`, `TXT_MARCA_EQUIP`, `TXT_MODELO_EQUIP`, `TXT_SERIAL_EQUIP`, `TXT_OBSERVACAO_EQUIP`,`DTA_GARANTIA_EQUIP`,`TXT_ATIVO_EQUIP`) 
+									`NUM_HD_EQUIP`, `TXT_TIPO_ARMAZENAMENTO_EQUIP`,`TXT_PROCESSADOR_EQUIP`, `NUM_MEMORIA_EQUIP`,`TXT_TIPO_MEMORIA_EQUIP`, `TXT_PLACAMAE_EQUIP`, `TXT_MONITOR_EQUIP`, `TXT_APLICATIVOS_EQUIP`, `NUM_NFE_EQUIP`, 
+									`DTH_REGISTRO_EQUIP`, `TXT_MARCA_EQUIP`, `TXT_MODELO_EQUIP`, `TXT_SERIAL_EQUIP`, `TXT_OBSERVACAO_EQUIP`,`DTA_GARANTIA_EQUIP`,`TXT_ATIVO_EQUIP`) 
 									
-									VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?,?,?,?,?,'S')"); 
+									VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?,?,?,?,?,'SIM')"); 
 				
 				$res->bindParam(1,$sistemaoperacional);
 				$res->bindParam(2,$id_cliente);

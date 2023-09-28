@@ -1,19 +1,18 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head> 
- <title>SGOFIC - Sistema de Gestão de Oficina 🚚🚕</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <meta name="author" content="Adriano Nogueira - Desenvolvedor">
-   <meta content= "SGOFIC - SISTEMA DE GESTÃO DE OFICINAS" name="description">
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- </head>
+
 <body>
 
 <?php 
   include_once "conexao.php";
-	$valor = $_POST['valor'];
-	$criterio = $_POST['criterio'];
+  if($_POST['valor']==""){
+      $valor = $_GET['valor'];
+      $criterio = 'I';
+  }else{
+	    $valor = $_POST['valor'];
+	    $criterio = $_POST['criterio'];
+  }
 	
   $MensagemNaoEncontrado = "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-clientes.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";
 
@@ -49,10 +48,10 @@
   <table width="100%" class="table responsive">
   <tr>
       <td><?php include "inicial.php" ?></td>
+  </tr>
   <tr>
 		  <td><legend class="p-4 table-primary">Listagem de Clientes<a href="cadastro-clientes.php"><legend></td>
 	</tr>
-  </tr>
   <tr>
       <td>
           <table class="table-hover table table-bordered  responsive">
@@ -88,8 +87,8 @@
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                   <a class="dropdown-item" href="detalhes-clientes.php?id=<?php echo $row->NUM_ID_CLI;?>">Detalhes</a>                                  
                                   <?php  if($perfil_usuario == '00003'){ ?>        
-                                      <a class="dropdown-item" href="cadastro-frota.php?id=<?php echo $row->NUM_ID_CLI;?>"> + Frota</a>
-                                      <a class="dropdown-item" href="listagem-frota.php?id=<?php echo $row->NUM_ID_CLI;?>">Listar Frota</a>
+                                      <a class="dropdown-item" href="cadastro-equipamentos.php?id=<?php echo base64_encode($row->NUM_ID_CLI)?>"> + Equipamento</a>
+                                      <a class="dropdown-item" href="listagem-equipamentos.php?valor=<?php echo base64_encode($row->NUM_ID_CLI)?>">Listar Equipamentos</a>
                                   <?php }else if($perfil_usuario == '00002'){ ?>                                                                                                                 
                                       <a class="dropdown-item" href="dados-recebimento.php?criterio=AD&valor=<?php echo $row->NUM_ID_CLI;?>">+ Adiantamento</a>
                                       <a class="dropdown-item" href="listagem-recibo.php?criterio=I&valor=<?php echo $row->NUM_ID_CLI;?>">Recibos</a>
