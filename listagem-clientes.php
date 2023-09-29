@@ -7,7 +7,7 @@
 <?php 
   include_once "conexao.php";
   if($_POST['valor']==""){
-      $valor = $_GET['valor'];
+      $valor = base64_decode($_GET['valor']);
       $criterio = 'I';
   }else{
 	    $valor = $_POST['valor'];

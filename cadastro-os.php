@@ -2,8 +2,9 @@
 //verificacao se equipamento possui OS em garantia
   include "conexao.php";
   
- $valor = base64_decode($_GET['id_fr']);
- $nome_cliente = base64_decode($_GET['nome_cliente']);
+ $valor = base64_decode($_GET['id_e']);//id_e
+ $id_cliente_fr = base64_decode($_GET['id_c']);//id_c
+ $nome_cliente = base64_decode($_GET['nc']);
 
  $iniciogarantia = date('Y-m-d');
 

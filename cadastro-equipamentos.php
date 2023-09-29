@@ -61,25 +61,16 @@ $idcliente = base64_decode($_GET['id']);
                     <input name="hd" type="number" id="hd" title="INFORME A CAPACIDADE DO HD EM GB OU ZERO" class="form-control" value="0"  />
                 </div>
 
-                <div class="form-group col-md-3 col-sm-6"><label for="tipoarmazenamento">Tipo HD</label>
-                    <select name="tipoarmazenamento" id="tipoarmazenamento" title="SELECIONE O TIPO DO ARMAZENAMENTO" class="form-control">
-                        <option value="IDE">IDE</option>
-                        <option value="SSD">SSD</option>
-                        <option value="SSD NVME">SSD NVME</option>
-                        <option value="CHIP">CHIP</option>
-                    </select>
+                <div class="form-group col-sm-6 col-md-3"><label for="tipoarmazenamento">Tipo HD</label>
+                    <input name="memoria" type="tipoarmazenamento" id="tipoarmazenamento" class="form-control" title="SELECIONE O TIPO DO ARMAZENAMENTO" placeholder="EX: IDE - SSD - NVME - CHIP">
                 </div>
                 
                 <div class="form-group col-sm-6 col-md-3"><label for="memoria">Memoria em GB</label>
-                  <input name="memoria" type="number" id="memoria" class="form-control" title="INFORME TOTAL DA MEMORIA EM GB" value="0">
+                    <input name="memoria" type="number" id="memoria" class="form-control" title="INFORME TOTAL DA MEMORIA EM GB" value="0">
                 </div>
 
-                <div class="form-group col-md-3 col-sm-6"><label for="tipomemoria">Tipo Memoria</label>
-                    <select name="tipomemoria" id="tipomemoria" title="SELECIONE O TIPO DA MEMORIA" class="form-control">
-                        <option value="DDR2">DDR2</option>
-                        <option value="DDR3">DDR3</option>
-                        <option value="DDR4">DDR4</option>
-                    </select>
+                <div class="form-group col-sm-6 col-md-3"><label for="tipomemoria">Tipo Memoria</label>
+                    <input name="memoria" type="tipomemoria" id="tipomemoria" class="form-control" title="SELECIONE O TIPO DA MEMORIA" placeholder="EX: DDR3 - DDR4 - DDR2">
                 </div>
 
                 <div class="form-group col-sm-6 col-md-5"><label for="placamae">Placa Mae</label>

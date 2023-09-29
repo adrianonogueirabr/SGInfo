@@ -58,19 +58,11 @@
   </tr>
   <tr>
       <td>
-        <?php if ($criterio =="C"){ ?>
-       	    <legend><h3>
-                <a href="listagem-clientes.php?valor=<?php echo $valor ?>&criterio=I"><img src="imagens/voltar.png" width="30" height="30" alt="voltar" title="Clique para voltar" /></a>
-		            <a href="cadastro-equipamentos.php?id=<?php echo base64_encode($valor) ?>"><img src="imagens/computador_add.png" width="30" height="30" alt="novo" title="Clique para Novo Equipamento" />
-                </a>Listagem de Equipamentos</h3></legend>	
-	    	<?php }else{ ?>
-		    	  <legend><h3>Listagem de Equipamento</h3></legend>		
-	    	<?php } ?>
+          <legend class="p-4 table-primary"><h3>Listagem de Equipamento</h3></legend>	
       </td>
-    </tr>
-    </tr>
-    <tr>
-        <td>
+  </tr>
+  <tr>
+      <td>
             <table class="table-hover table table-bordered  responsive">
                 <tr class="table-success" align="center">		
                     <th scope="col">ID</th>
@@ -95,7 +87,7 @@
                       <div class="btn-group dropleft">
                           <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações</button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="detalhes-equipamentos.php?id=<?php echo $row->NUM_ID_EQUIP;?>">Detalhes</a>
+                            <a class="dropdown-item" href="detalhes-equipamentos.php?id=<?php echo base64_encode($row->NUM_ID_EQUIP)?>">Detalhes</a>
                             <a class="dropdown-item" href="cadastro-os.php?id_equip=<?php echo base64_encode($row->NUM_ID_EQUIP) ?>&id_cliente_equip=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nome_cliente=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Abrir OS</a>
                             <a class="dropdown-item" href="historico-os.php?valor=<?php echo $row->NUM_ID_EQUIP; ?>&id_cliente_equip=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nome_cliente=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Histórico de OS</a> 
                           </div>
@@ -103,7 +95,17 @@
                   </td>
                 </tr>
             <?php } ?>
-            </table>
+            </table> 
+            <?php if ($criterio =="C"){ ?>      
+                <div class="form-row">
+                    <div class="form-group col-md-2 col-sm-12">
+                        <a href="listagem-clientes.php?valor=<?php echo base64_encode($valor) ?>&criterio=I" class="btn btn-outline-secondary btn-block" role="button" aria-pressed="true">Voltar</a>                        
+                    </div>
+                    <div class="form-group col-md-2 col-sm-12">
+                        <a href="cadastro-equipamentos.php?id=<?php echo base64_encode($valor) ?>" class="btn btn-outline-primary btn-block" role="button" aria-pressed="true"  >Novo Equipamento</a> 
+                    </div>  
+                </div>	
+            <?php }?>           
         </td>
     </tr>
   </table>
