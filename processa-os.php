@@ -2,15 +2,14 @@
 
 include "verifica.php";
 
+//echo $_POST['mecanico'];
 
-
-echo $_POST['mecanico'];
-
-		$id_cliente					=base64_decode($_POST["id_cliente_fr"]);
-		$id_fr						=base64_decode($_POST["id_fr"]);
+		$id_cliente					=$_POST["id_cliente"];
+		$tipo_atendimento			=$_POST["tipo_atendimento"];
+		$id_e						=$_POST["id_e"];
 		$tipo_os  					=$_POST["tipo_os"];
 		$dadosgerais				=$_POST["dadosgerais"];
-		$solicitacoes				=$_POST["solicitacoes"];
+		$reclamacao					=$_POST["reclamacao"];
 		$previsao					=$_POST['previsao'];	
 		$km							=$_POST['km'];	
 		//$cancelamento				=strtoupper($_POST["cancelamento"]);
@@ -75,26 +74,31 @@ case "cadastrar":
 		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-frota.php'><script type=\"text/javascript\">alert(\"Erro no processamento das informacoes!\");</script>";		
 	}else{				
 				
-				$sqlCadastro = $con->prepare("INSERT INTO TBL_ORDEMSERVICO_OS (`TBL_FROTA_FR_NUM_ID_FR`, `TBL_CLIENTE_CLI_NUM_ID_CLI`, `TBL_EMPRESA_EMP_NUM_ID_EMP`, 
+				$sqlCadastro = $con->prepare("INSERT INTO TBL_ORDEMSERVICO_OS (`TXT_TIPO_ATENDIMENTO_OS`,`TBL_CLIENTE_CLI_NUM_ID_CLI`,`TBL_EMPRESA_EMP_NUM_ID_EMP`,`TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP`, 
 				
-					`TBL_USUARIO_USU_NUM_ID_USU`,`TXT_TIPO_OS`, `DTH_ABERTURA_OS`,`TXT_DADOSGERAIS_OS`, `NUM_KM_OS`, `TXT_SOLICITACOES_OS`, `DTA_PREVISAO_OS`,
+					`TBL_USUARIO_USU_NUM_ID_USU`,`TXT_TIPO_OS`, `TXT_CONDICAO_PAGAMENTO_OS`,`DTH_ABERTURA_OS`,`TXT_DADOSGERAIS_OS`, `TXT_RECLAMACAO_OS`,  `DTA_PREVISAO_OS`, `TXT_DEFEITO_OS`, `TXT_RESOLUCAO_OS`,
 											
-					`VAL_TOTAL_OS`, `VAL_DESCONTO_OS`, `VAL_FINAL_OS`, `DTH_ENCERRAMENTO_OS`, `DTA_FIMGARANTIA_OS`, `NUM_NFSE_OS`, `TXT_CANCELAMENTO_OS`,`TXT_CONDICAO_PAGAMENTO_OS`, `TXT_STATUS_OS`)
+					`VAL_TOTAL_OS`, `VAL_DESCONTO_OS`, `VAL_FINAL_OS`, `DTH_ENCERRAMENTO_OS`, `DTA_FIMGARANTIA_OS`, `NUM_NFSE_OS`, `TXT_CANCELAMENTO_OS`, `NUM_KM_OS`,`TXT_STATUS_OS`)
 
-					VALUES (?,?,?,?,?,now(),?,?,?,?,0,0,0,null,null,0,null,NULL,'ABERTA')"); 
+					VALUES (?,?,?,?,?,?,null, now(),?,?,?,?,?,0,0,0,null,null,0,null,?,'ABERTA')"); 
 
-				$sqlCadastro->bindParam(1,$id_fr);
+				$sqlCadastro->bindParam(1,$tipo_atendimento);
 				$sqlCadastro->bindParam(2,$id_cliente);
-				$sqlCadastro->bindParam(3,$empresa_usuario);				
-				$sqlCadastro->bindParam(4,$id_usuario);
-				$sqlCadastro->bindParam(5,$tipo_os);
-				$sqlCadastro->bindParam(6,$dadosgerais);
-				$sqlCadastro->bindParam(7,$km);
-				$sqlCadastro->bindParam(8,$solicitacoes);
+				$sqlCadastro->bindParam(3,$empresa_usuario);
+				$sqlCadastro->bindParam(4,$id_e);								
+				$sqlCadastro->bindParam(5,$id_usuario);
+				$sqlCadastro->bindParam(6,$tipo_os);
+
+				$sqlCadastro->bindParam(7,$dadosgerais);
+				$sqlCadastro->bindParam(8,$reclamacao);
 				$sqlCadastro->bindParam(9,$previsao);
+				$sqlCadastro->bindParam(10,$defeito);
+				$sqlCadastro->bindParam(11,$resolucao);
+
+				$sqlCadastro->bindParam(12,$km);
+				
 		
-				if(! $sqlCadastro->execute() )
-				{
+				if(! $sqlCadastro->execute() ){
 				  	die('Houve um erro no processamento da transação: ' . $sqlCadastro . mysqli_error($con));
 				}				
 				$result = $con->prepare("SELECT MAX(NUM_ID_OS) FROM TBL_ORDEMSERVICO_OS");

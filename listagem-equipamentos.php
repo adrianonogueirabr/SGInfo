@@ -67,6 +67,7 @@
                 <tr class="table-success" align="center">		
                     <th scope="col">ID</th>
                     <th scope="col">Ativo</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Equipamento</th>
                     <th scope="col">Utilizacao</th>
@@ -79,6 +80,7 @@
                 <tr align="center">
                   <td><?php echo $row->NUM_ID_EQUIP?></td>
                   <td><?php echo $row->TXT_ATIVO_EQUIP?></td>
+                  <td><?php echo $row->TXT_RAZAO_CLI?></td>
                   <td><?php echo $row->TXT_TIPO_EQUIP?></td>
                   <td><?php echo $row->TXT_MARCA_EQUIP ?> / <?php echo $row->TXT_MODELO_EQUIP?> / <?php echo $row->TXT_SERIAL_EQUIP?></td>
                   <td><?php echo $row->TXT_DESCRICAO_EQUIP ?></td>
@@ -88,7 +90,7 @@
                           <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações</button>
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="detalhes-equipamentos.php?id=<?php echo base64_encode($row->NUM_ID_EQUIP)?>">Detalhes</a>
-                            <a class="dropdown-item" href="cadastro-os.php?id_equip=<?php echo base64_encode($row->NUM_ID_EQUIP) ?>&id_cliente_equip=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nome_cliente=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Abrir OS</a>
+                            <a class="dropdown-item" href="cadastro-os.php?id_e=<?php echo base64_encode($row->NUM_ID_EQUIP) ?>&id_c=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nc=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Abrir OS</a>
                             <a class="dropdown-item" href="historico-os.php?valor=<?php echo $row->NUM_ID_EQUIP; ?>&id_cliente_equip=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nome_cliente=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Histórico de OS</a> 
                           </div>
                       </div>
