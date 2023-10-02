@@ -30,14 +30,14 @@
     <tr>
         <td><legend class="p-4 table-primary">Servicos e Pecas<legend></td>
     </tr>
-</table>
-<?php
-    if(isset($_SESSION['msg'])){
-        echo $_SESSION['msg'];
-        unset($_SESSION['msg']);
-    }
-?>
-<table  class="table">
+
+    <?php
+        if(isset($_SESSION['msg'])){
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        }
+    ?>
+
   	<tr>
         <td>    
             <?php
@@ -74,44 +74,39 @@
                         <?php 
                     
                      //select para pegar tipo de equipamento e serial
-                      $sql_frota = $con->prepare("SELECT C.TXT_RAZAO_CLI,F.TBL_CLIENTE_CLI_NUM_ID_CLI , F.NUM_ID_FR, F.TXT_ATIVO_FR, T.TXT_NOME_TIP, M.TXT_NOME_MAR, MO.TXT_NOME_MOD, 
-                 
-                      F.TXT_PLACA_FR, F.TXT_CHASSI_FR, F.DTH_REGISTRO_FR,F.DTH_ALTERACAO_FR, CO.TXT_NOME_COR 
+                      $sql_equipamento = $con->prepare("SELECT NUM_ID_EQUIP, TXT_TIPO_EQUIP, TXT_MODELO_EQUIP, TXT_MARCA_EQUIP, TXT_SERIAL_EQUIP
 
-                      FROM tbl_frota_fr F 
+                      FROM tbl_equipamento_equip 
+           
+                      WHERE NUM_ID_EQUIP = $row->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP");
 
-                      LEFT JOIN TBL_CLIENTE_CLI C ON C.NUM_ID_CLI = F.TBL_CLIENTE_CLI_NUM_ID_CLI 
-                      LEFT JOIN TBL_TIPO_TIP T ON T.NUM_ID_TIP = F.TBL_TIPO_TIP_NUM_ID_TIP 
-                      LEFT JOIN TBL_MARCA_MAR M ON M.NUM_ID_MAR = F.TBL_MARCA_MAR_NUM_ID_MAR
-                      LEFT JOIN TBL_MODELO_MOD MO ON MO.NUM_ID_MOD = F.TBL_MODELO_MOD_NUM_ID_MOD
-                      LEFT JOIN TBL_COR_COR CO ON CO.NUM_ID_COR = F.TBL_COR_COR_NUM_ID_COR
-            
-                      WHERE F.NUM_ID_FR = $row->TBL_FROTA_FR_NUM_ID_FR");
-
-                        $sql_frota->execute();
-            
-                        while($row_frota = $sql_frota->fetch(PDO::FETCH_OBJ)){?>
+                        $sql_equipamento->execute();
                             
-                            <div class="form-group  col-md-4 "><label for="Tipo">Tipo</label>
-                                <input name="Tipo" value="<?php echo $row_frota->TXT_NOME_TIP; ?>" readonly="readonly" class="form-control"  /></div> 
-                            <div class="form-group  col-md-4 "><label for="Marca">Marca</label>
-                                <input name="Marca" value="<?php echo $row_frota->TXT_NOME_MAR; ?>" readonly="readonly" class="form-control"  /></div>                        
-                            <div class="form-group  col-md-4 "><label for="Modelo">Modelo</label>
-                                <input name="Modelo" value="<?php echo $row_frota->TXT_NOME_MOD; ?>" readonly="readonly" class="form-control"  /> </div>                        
-                            <div class="form-group  col-md-4 "><label for="Placa">Placa</label>
-                                <input name="Placa" value="<?php echo $row_frota->TXT_PLACA_FR; ?>" readonly="readonly" class="form-control"  /> </div>                        
-                            <div class="form-group col-md-4 "><label for="Chassi">Chassi</label>
-                                <input name="Chassi" value="<?php echo $row_frota->TXT_CHASSI_FR; ?>" readonly="readonly" class="form-control"  /> </div>                        
-                            <div class="form-group  col-md-4 "><label for="Cor">Cor</label>
-                                <input name="Cor" value="<?php echo $row_frota->TXT_NOME_COR; ?>" readonly="readonly" class="form-control"  /></div>                        
-                          
+                        while($row_equipamento = $sql_equipamento->fetch(PDO::FETCH_OBJ)){?>
+
+                            <div class="form-row" >
+                                <div class="form-group input-group-sm col-md-2 "><label for="Nome">ID</label>
+                                    <input name="Nome" value="<?php echo $row->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
+                                </div>
+                                <div class="form-group input-group-sm col-md-3 "><label for="Tipo">Tipo</label>
+                                    <input name="Tipo" value="<?php echo $row_equipamento->TXT_TIPO_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
+                                </div> 
+                                <div class="form-group input-group-sm col-md-2 "><label for="Marca">Modelo</label>
+                                    <input name="Marca" value="<?php echo $row_equipamento->TXT_MODELO_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
+                                </div>                        
+                                <div class="form-group input-group-sm col-md-2 "><label for="Modelo">Marca</label>
+                                    <input name="Modelo" value="<?php echo $row_equipamento->TXT_MARCA_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
+                                </div>                        
+                                <div class="form-group input-group-sm col-md-3 "><label for="Placa">Serial</label>
+                                    <input name="Placa" value="<?php echo $row_equipamento->TXT_SERIAL_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
+                                </div>    
                         <?php }?>
                         <!--fim identificacao da frota-->
                         <div class="form-group col-md-12 col-sm-6"><label>Dados Gerais Frota</label>
                         <input title="DADOS GERAIS DA FROTA DA ORDEM DE SERVICO" value="<?php echo $row->TXT_DADOSGERAIS_OS ?>" readonly="readonly" class="form-control" readonly /></div> 
 
                         <div class="form-group col-md-12 col-sm-6"><label>Solicitacoes</label>
-                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $row->TXT_SOLICITACOES_OS ?></textarea></div>
+                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $row->TXT_RECLAMACAO_OS ?></textarea></div>
                         
                         <div class="form-group col-md-4 col-sm-6"><label>Valor Total</label>
                         <input title="VALOR TOTAL DE SERVICOS E PECAS" value="R$<?php echo number_format($row->VAL_TOTAL_OS,2) ?>" readonly="readonly" class="form-control" readonly /> </div> 

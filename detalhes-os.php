@@ -4,10 +4,10 @@
 
 include "conexao.php";
 include "verifica.php";
-	$id_os = $_GET['id'];
-  $res = $con->prepare("SELECT C.TXT_RAZAO_CLI ,C.TXT_TELEFONE_CLI, F.TXT_PLACA_FR, F.TXT_CHASSI_FR,                       
+  $id_os = base64_decode($_GET['id']);
+  $res = $con->prepare("SELECT C.TXT_RAZAO_CLI ,C.TXT_TELEFONE_CLI, C.TXT_EMAIL_CLI, E.TXT_TIPO_EQUIP, E.TXT_MODELO_EQUIP,E.TXT_SERIAL_EQUIP,                       
 
-                        OS.DTH_ABERTURA_OS, OS.TXT_DADOSGERAIS_OS, OS.TXT_SOLICITACOES_OS, OS.TXT_CANCELAMENTO_OS,OS.VAL_TOTAL_OS, VAL_DESCONTO_OS, VAL_FINAL_OS,
+                        OS.DTH_ABERTURA_OS, OS.TXT_DADOSGERAIS_OS, OS.TXT_RECLAMACAO_OS, OS.TXT_CANCELAMENTO_OS,OS.VAL_TOTAL_OS, VAL_DESCONTO_OS, VAL_FINAL_OS,
                         OS.DTH_ABERTURA_OS, OS.DTA_PREVISAO_OS, OS.DTH_ENCERRAMENTO_OS, OS.TXT_STATUS_OS   
 
                         FROM	TBL_ORDEMSERVICO_OS OS
@@ -15,8 +15,8 @@ include "verifica.php";
                         LEFT JOIN TBL_CLIENTE_CLI C
                         ON C.NUM_ID_CLI = OS.TBL_CLIENTE_CLI_NUM_ID_CLI
 
-                        LEFT JOIN TBL_FROTA_FR F
-                        ON F.NUM_ID_FR = OS.TBL_FROTA_FR_NUM_ID_FR
+                        LEFT JOIN TBL_EQUIPAMENTO_EQUIP E
+                        ON E.NUM_ID_EQUIP = OS.TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP
 
                         WHERE NUM_ID_OS = ?");
 
@@ -36,28 +36,36 @@ include "verifica.php";
     <tr>
         <td> 
             <div class="form-row"> 
-            <div class="form-group col-md-8 col-sm-6">
+            <div class="form-group col-md-6 col-sm-6">
                 <label for="tipo">Cliente</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_RAZAO_CLI ?>" />          
             </div> 
 
-            <div class="form-group col-md-4 col-sm-6">
+            <div class="form-group col-md-3 col-sm-6">
+                <label for="tipo">Email</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_EMAIL_CLI ?>" />           
+            </div> 
+
+            <div class="form-group col-md-3 col-sm-6">
                 <label for="tipo">Telefone</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_TELEFONE_CLI ?>" />           
             </div> 
 
-            <div class="form-group col-md-8 col-sm-12">
-                <label for="tipo">Situacao da Frota</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_DADOSGERAIS_OS ?>" />                           
+            <div class="form-group col-md-6 col-sm-12">
+                <label for="tipo">Situacao do Equipamento</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_DADOSGERAIS_OS ?>" />                           
             </div>
 
             <div class="form-group col-md-2 col-sm-12">              
-                <label for="tipo">Placa</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_PLACA_FR ?>" />                                          
+                <label for="tipo">Tipo</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_TIPO_EQUIP ?>" />                                          
             </div>
 
             <div class="form-group col-md-2 col-sm-12">              
-                <label for="tipo">Chassi</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_CHASSI_FR ?>" />                                                        
+                <label for="tipo">Modelo</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_MODELO_EQUIP ?>" />                                                        
+            </div>
+
+            <div class="form-group col-md-2 col-sm-12">              
+                <label for="tipo">Serial</label><input  class="form-control" readonly="true" value="<?php echo $row->TXT_SERIAL_EQUIP ?>" />                                                        
             </div>
             
             <div class="form-group col-md-12 col-sm-12">              
-                <label for="tipo">Solicitacoes</label><textarea  class="form-control" readonly="true"><?php echo $row->TXT_SOLICITACOES_OS ?>"</textarea>                                
+                <label for="tipo">Reclamacao</label><textarea  class="form-control" readonly="true"><?php echo $row->TXT_RECLAMACAO_OS ?>"</textarea>                                
             </div>
 
             <div class="form-group col-md-4 col-sm-6"><label>Valor Total</label>
@@ -87,7 +95,7 @@ include "verifica.php";
             </div>
 
             <div class="form-group col-md-3 col-sm-6">              
-                <label for="tipo">Data Encerramento</label><input  class="form-control" readonly="true" value="<?php if($row->DTH_ENCERRAMENTO_OS<>""){ echo  date("d/m/Y H:i:s",strtotime($row->DTH_ENCERRAMENTO_OS));}else{ echo "S/D";} ?>" /> 
+                <label for="tipo">Data Encerramento</label><input  class="form-control" readonly="true" value="<?php if($row->DTH_ENCERRAMENTO_OS<>""){ echo date("d/m/Y H:i:s",strtotime($row->DTH_ENCERRAMENTO_OS));}else{ echo "S/D";} ?>" /> 
             </div>            
 
             <div class="form-group col-md-3 col-sm-6">               
@@ -106,7 +114,7 @@ include "verifica.php";
                                     <th>Total</td>
                                     <th>Inicio</td>
                                     <th>Termino</td>                        
-                                    <th>Mecanico</td>      
+                                    <th>Tecnico</td>      
                             </tr>
                         </thead>
                         <tbody>
@@ -129,11 +137,11 @@ include "verifica.php";
                                     <td>R$ <?php echo number_format($rowItem->VAL_DESCONTO_SERVICO_OS,2) ?></td>
                                     <td>R$ <?php echo number_format($rowItem->VAL_VALOR_FINAL_SERVICO_OS,2) ?></td>
                                     <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_INICIO_SERVICO_OS)) ?></td>					
-                                    <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_FINAL_SERVICO_OS)) ?></td>
+                                    <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_TERMINO_SERVICO_OS)) ?></td>
                                     <!--Buscar nome do mecanico-->
                                     <?php
-                                        $idMecanico = $rowItem->TBL_MECANICO_MEC_NUM_ID_MEC;
-                                        $sqlNomeMecanico = $con->prepare("SELECT TXT_CODIGO_MEC FROM TBL_MECANICO_MEC WHERE NUM_ID_MEC = '$idMecanico'");
+                                        $idMecanico = $rowItem->TBL_TECNICO_TEC_NUM_ID_TEC;
+                                        $sqlNomeMecanico = $con->prepare("SELECT TXT_CODIGO_TEC FROM TBL_TECNICO_TEC WHERE NUM_ID_TEC = '$idMecanico'");
                                         $sqlNomeMecanico->execute();
                                         $nomeMecanico = $sqlNomeMecanico->fetchColumn()
                                     ?>

@@ -4,7 +4,7 @@ document.getElementById('dadosgerais').addEventListener('keyup', (ev) => {
 	input.value = input.value.toUpperCase();
 });
 
-document.getElementById('solicitacoes').addEventListener('keyup', (ev) => {
+document.getElementById('reclamacao').addEventListener('keyup', (ev) => {
 	const input = ev.target;
 	input.value = input.value.toUpperCase();
 });

@@ -16,7 +16,7 @@
                       echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
                   }
       }else if($criterio == "E"){
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_FROTA_FR_NUM_ID_FR = '$valor' ORDER BY NUM_ID_OS DESC");
+          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP = '$valor' ORDER BY NUM_ID_OS DESC");
               $res->execute();
                   if($res->rowCount()<=0){
                       echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
@@ -70,7 +70,7 @@
             <th scope="col">Numero</th>
             <th scope="col">Status</th>
             <th scope="col">Cliente</th>
-            <th scope="col">Solicitacoes</th>
+            <th scope="col">Reclamacao</th>
             <th scope="col">Total</th>
             <th scope="col">Desconto</th>
             <th scope="col">Final</th>
@@ -97,7 +97,7 @@
 			      ?>
             <td><?php echo $nome ?></td>  
 
-            <td><?php echo mb_substr( $row->TXT_SOLICITACOES_OS, 0, 100, 'ISO-8859-1'); ?>...</td>
+            <td><?php echo mb_substr( $row->TXT_RECLAMACAO_OS, 0, 100, 'ISO-8859-1'); ?>...</td>
             <td>R$<?php echo number_format($row->VAL_TOTAL_OS,2) ?></td>
             <td>R$<?php echo number_format($row->VAL_DESCONTO_OS,2) ?></td>
             <td>R$<?php echo number_format($row->VAL_FINAL_OS,2) ?></td>
@@ -128,12 +128,12 @@
               <?php }else{} ?>
 
               <?php if ($statusos<>"AB"){ }else{?><!--verifica status da os para editar ou cancelar -->
-                <a class="dropdown-item" href="alterar-os.php?id=<?php echo $row->NUM_ID_OS ?>">Alterar OS</a>                
+                <a class="dropdown-item" href="alterar-os.php?id=<?php echo base64_encode($row->NUM_ID_OS) ?>">Alterar OS</a>                
               <?php } ?>
 
-              <a class="dropdown-item" href="detalhes-os.php?id=<?php echo $row->NUM_ID_OS ?>" >Detalhes OS</a>             
+              <a class="dropdown-item" href="detalhes-os.php?id=<?php echo base64_encode($row->NUM_ID_OS) ?>" >Detalhes OS</a>             
 
-              <a class="dropdown-item" href="relatorio-os.php?id=<?php echo $row->NUM_ID_OS?>" target="_blank">Imprimir OS</a>
+              <a class="dropdown-item" href="relatorio-os.php?id=<?php echo base64_encode($row->NUM_ID_OS) ?>" target="_blank">Imprimir OS</a>
 
               <!--Inicio atribuir tecnico-->
               <?php if($_SESSION['perfil_usu']==00007 AND $statusos=="AB"){ ?>               

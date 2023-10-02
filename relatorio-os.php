@@ -3,7 +3,7 @@
     
     include "conexao.php";
     
-    $valor = $_GET['id'];	
+    $valor = base64_decode($_GET['id']);	
     
     $sqlOs = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$valor'");		
     $sqlOs->execute();
@@ -14,24 +14,28 @@
 ?>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head> 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="author" content="Adriano Nogueira - Desenvolvedor">
-    <meta content= "SGOFIC - SISTEMA DE GESTÃO DE OFICINAS" name="description">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    </head>
+<head>
+ 
+ <title>SGINFO - Sistema de Gestao de Informatica </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Adriano Nogueira - Desenvolvedor">
+  <meta content= "SGinfo - Sistema de Gestao de Informatica" name="description">
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+   <link rel="stylesheet" href="bootstrap/bootstrap-icons.css">
+   
+   <script src="bootstrap/jquery-3.3.1.slim.min.js"></script>
+   <script src="bootstrap/popper.min.js"></script>
+   <script src="bootstrap/bootstrap.min.js"></script>
+   
+ </head>
 <body>
 <table width="100%" class="table"> 
     <tr>
         <td width="50%">
-            <img src="imagens/logo_ofc.png" width="50%" height="80" />     
+            <img src="imagens/logo techfy.png" width="40%" height="90" />     
         </td>
         <td align="right">
             <?php	while ($rowOs = $sqlOs->fetch(PDO::FETCH_OBJ)){	?> 
@@ -82,50 +86,37 @@
             </td>
         </tr>
         <tr>       
-            <td colspan="4"><h4>Dados da Frota</h4>         
+            <td colspan="4"><h4>Dados de  Equipamento</h4>         
               <?php 
-                $equipamento = $rowOs->TBL_FROTA_FR_NUM_ID_FR;
-                //select para pegar tipo de equipamento e serial
-                 $sql_frota = $con->prepare("SELECT C.TXT_RAZAO_CLI,F.TBL_CLIENTE_CLI_NUM_ID_CLI , F.NUM_ID_FR, F.TXT_ATIVO_FR, T.TXT_NOME_TIP, M.TXT_NOME_MAR, MO.TXT_NOME_MOD, 
-                 
-                      F.TXT_PLACA_FR, F.TXT_CHASSI_FR, F.DTH_REGISTRO_FR,F.DTH_ALTERACAO_FR, CO.TXT_NOME_COR 
+                $equipamento = $rowOs->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP;
+                //select para pegar tipo de equipamento e serial E.TXT_TIPO_EQUIP, E.TXT_MODELO_EQUIP,E.TXT_SERIAL_EQUIP,
+                 $sql_equipamento = $con->prepare("SELECT NUM_ID_EQUIP, TXT_TIPO_EQUIP, TXT_MODELO_EQUIP, TXT_MARCA_EQUIP, TXT_SERIAL_EQUIP
 
-                      FROM tbl_frota_fr F 
+                      FROM tbl_equipamento_equip 
+           
+                      WHERE NUM_ID_EQUIP = $rowOs->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP");
 
-                      LEFT JOIN TBL_CLIENTE_CLI C ON C.NUM_ID_CLI = F.TBL_CLIENTE_CLI_NUM_ID_CLI 
-                      LEFT JOIN TBL_TIPO_TIP T ON T.NUM_ID_TIP = F.TBL_TIPO_TIP_NUM_ID_TIP 
-                      LEFT JOIN TBL_MARCA_MAR M ON M.NUM_ID_MAR = F.TBL_MARCA_MAR_NUM_ID_MAR
-                      LEFT JOIN TBL_MODELO_MOD MO ON MO.NUM_ID_MOD = F.TBL_MODELO_MOD_NUM_ID_MOD
-                      LEFT JOIN TBL_COR_COR CO ON CO.NUM_ID_COR = F.TBL_COR_COR_NUM_ID_COR
-            
-                      WHERE F.NUM_ID_FR = $rowOs->TBL_FROTA_FR_NUM_ID_FR");
-
-                 $sql_frota->execute();
+                 $sql_equipamento->execute();
     
-                while($row_frota = $sql_frota->fetch(PDO::FETCH_OBJ)){?>
+                while($row_equipamento = $sql_equipamento->fetch(PDO::FETCH_OBJ)){?>
 
                     <div class="form-row" >
-                        <div class="form-group input-group-sm col-md-3 "><label for="Nome">ID</label>
-                            <input name="Nome" value="<?php echo $rowOs->TBL_FROTA_FR_NUM_ID_FR; ?>" readonly="readonly" class="form-control"  />   		      
+                        <div class="form-group input-group-sm col-md-2 "><label for="Nome">ID</label>
+                            <input name="Nome" value="<?php echo $rowOs->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div>
                         <div class="form-group input-group-sm col-md-3 "><label for="Tipo">Tipo</label>
-                            <input name="Tipo" value="<?php echo $row_frota->TXT_NOME_TIP; ?>" readonly="readonly" class="form-control"  />   		      
+                            <input name="Tipo" value="<?php echo $row_equipamento->TXT_TIPO_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div> 
-                        <div class="form-group input-group-sm col-md-3 "><label for="Marca">Marca</label>
-                            <input name="Marca" value="<?php echo $row_frota->TXT_NOME_MAR; ?>" readonly="readonly" class="form-control"  />   		      
+                        <div class="form-group input-group-sm col-md-2 "><label for="Marca">Modelo</label>
+                            <input name="Marca" value="<?php echo $row_equipamento->TXT_MODELO_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
                         </div>                        
-                        <div class="form-group input-group-sm col-md-3 "><label for="Modelo">Modelo</label>
-                            <input name="Modelo" value="<?php echo $row_frota->TXT_NOME_MOD; ?>" readonly="readonly" class="form-control"  />   		      
+                        <div class="form-group input-group-sm col-md-2 "><label for="Modelo">Marca</label>
+                            <input name="Modelo" value="<?php echo $row_equipamento->TXT_MARCA_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
                         </div>                        
-                        <div class="form-group input-group-sm col-md-4 "><label for="Placa">Placa</label>
-                            <input name="Placa" value="<?php echo $row_frota->TXT_PLACA_FR; ?>" readonly="readonly" class="form-control"  />   		      
+                        <div class="form-group input-group-sm col-md-3 "><label for="Placa">Serial</label>
+                            <input name="Placa" value="<?php echo $row_equipamento->TXT_SERIAL_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div>                        
-                        <div class="form-group input-group-sm col-md-4 "><label for="Chassi">Chassi</label>
-                            <input name="Chassi" value="<?php echo $row_frota->TXT_CHASSI_FR; ?>" readonly="readonly" class="form-control"  />   		      
-                        </div>                        
-                        <div class="form-group input-group-sm col-md-4 "><label for="Cor">Cor</label>
-                            <input name="Cor" value="<?php echo $row_frota->TXT_NOME_COR; ?>" readonly="readonly" class="form-control"  />   		      
-                        </div>                        
+                      
                     </div>
                 <?php }//fim select pegar dados do equipamento ?>
             </td>
@@ -155,7 +146,7 @@
                         <input name="DadosGerais" value="<?php echo $rowOs->TXT_DADOSGERAIS_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div> 
                     <div class="form-group input-group-sm col-md-12 "><label for="Solicitacoes">Solicitacoes</label>
-                        <input name="Solicitacoes" value="<?php echo $rowOs->TXT_SOLICITACOES_OS; ?>" readonly="readonly" class="form-control"  />   		      
+                        <input name="Solicitacoes" value="<?php echo $rowOs->TXT_RECLAMACAO_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div> 
 
                     <div class="form-group col-md-4 input-group-sm"><label>Valor Total</label>
@@ -206,15 +197,15 @@
                                     <td>R$ <?php echo number_format($rowItem->VAL_DESCONTO_SERVICO_OS,2) ?></td>
                                     <td>R$ <?php echo number_format($rowItem->VAL_VALOR_FINAL_SERVICO_OS,2) ?></td>
                                     <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_INICIO_SERVICO_OS)) ?></td>					
-                                    <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_FINAL_SERVICO_OS)) ?></td>
+                                    <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_TERMINO_SERVICO_OS)) ?></td>
                                     <!--Buscar nome do mecanico-->
                                     <?php
-                                        $idMecanico = $rowItem->TBL_MECANICO_MEC_NUM_ID_MEC;
-                                        $sqlNomeMecanico = $con->prepare("SELECT TXT_CODIGO_MEC FROM TBL_MECANICO_MEC WHERE NUM_ID_MEC = '$idMecanico'");
-                                        $sqlNomeMecanico->execute();
-                                        $nomeMecanico = $sqlNomeMecanico->fetchColumn()
+                                        $idTecnico = $rowItem->TBL_TECNICO_TEC_NUM_ID_TEC;
+                                        $sqlNomeTecnico = $con->prepare("SELECT TXT_CODIGO_TEC FROM TBL_TECNICO_TEC WHERE NUM_ID_TEC = '$idTecnico'");
+                                        $sqlNomeTecnico->execute();
+                                        $nomeTecnico = $sqlNomeTecnico->fetchColumn()
                                     ?>
-                                    <td><?php echo $nomeMecanico ?></td>                                    
+                                    <td><?php echo $nomeTecnico ?></td>                                    
                                     <!--<td><?php echo $rowItem->TXT_STATUS_SERVICO_OS ?></td> RETIRADO EM 04/09/2023 POIS ESTA DESALINHANDO O RELATORIO-->
                             </tr>
                         </tbody>

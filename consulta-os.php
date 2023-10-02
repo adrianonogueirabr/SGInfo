@@ -20,7 +20,7 @@
                     
                     <div class="form-check col-md-2">
                         <input class="form-check-input" type="radio" name="criterio" id="criterio" value="E" checked>
-                        <label class="form-check-label" for="criterio">Pelo ID Frota </label>
+                        <label class="form-check-label" for="criterio">Pelo ID Equipamento </label>
                     </div> 
 
                     <div class="form-check col-md-2">
