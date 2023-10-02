@@ -60,6 +60,7 @@
 <table width="100%" class="table responsive">
   <tr>
       <td><?php include "inicial.php" ?>
+  </tr>
   <tr>
 		  <td><legend class="p-4 table-primary">Ordem de Serviços encontradas: Total <?php echo $res->rowCount()?><legend></td>
 	</tr>
@@ -69,6 +70,8 @@
           <tr class="table-success" align="center">	
             <th scope="col">Numero</th>
             <th scope="col">Status</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Atendimento</th>
             <th scope="col">Cliente</th>
             <th scope="col">Reclamacao</th>
             <th scope="col">Total</th>
@@ -84,6 +87,8 @@
           
             <td align="center"><?php echo $row->NUM_ID_OS ?></td>
             <td align="center"><?php echo $row->TXT_STATUS_OS ?></td>
+            <td align="center"><?php echo $row->TXT_TIPO_OS ?></td>
+            <td align="center"><?php echo $row->TXT_TIPO_ATENDIMENTO_OS ?></td>
 
             <input name="statusos" type="hidden" value="<?php echo $row->TXT_STATUS_OS ?>" />
             <!-- captura o status da ordem de servico para informar se troca ou nao de usuario-->

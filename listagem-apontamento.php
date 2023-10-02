@@ -61,10 +61,13 @@
                             $cli = $row->TBL_CLIENTE_CLI_NUM_ID_CLI;
                             $sql_nome = $con->prepare("SELECT *  FROM TBL_CLIENTE_CLI WHERE NUM_ID_CLI = '$cli'");
                             $sql_nome->execute();
-                            while($row_nome = $sql_nome->fetch(PDO::FETCH_OBJ)){						
+                            while($row_nome = $sql_nome->fetch(PDO::FETCH_OBJ)){
+                                //capturando tipo do cliente para estipular precos
+                                $tipoCLiente = $row_nome->TXT_PESSOA_CLI;
                         ?>
                             <!-- adcionado em 21/01/2019	codigo para capturar tpo de pessoa cliente-->
                             <input type="hidden" name="pessoa_cliente" id="pessoa_cliente" value="<?php echo $row_nome->TXT_PESSOA_CLI ?>" />
+
 
                             <div class="form-group  col-md-6 col-sm-6"><label>Cliente</label>
                             <input title="CLIENTE DA ORDEM DE SERVICO" value="<?php echo $row_nome->TXT_RAZAO_CLI ?>" readonly="readonly" class="form-control" readonly /> </div>                    
@@ -85,28 +88,43 @@
                         while($row_equipamento = $sql_equipamento->fetch(PDO::FETCH_OBJ)){?>
 
                             <div class="form-row" >
-                                <div class="form-group input-group-sm col-md-2 "><label for="Nome">ID</label>
+                                <!--<div class="form-group input-group-sm col-md-2 "><label for="Nome">ID</label>
                                     <input name="Nome" value="<?php echo $row->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
-                                </div>
-                                <div class="form-group input-group-sm col-md-3 "><label for="Tipo">Tipo</label>
+                                </div>-->
+                                <div class="form-group  col-md-3 "><label for="Tipo">Tipo</label>
                                     <input name="Tipo" value="<?php echo $row_equipamento->TXT_TIPO_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                                 </div> 
-                                <div class="form-group input-group-sm col-md-2 "><label for="Marca">Modelo</label>
+
+                                <div class="form-group  col-md-3 "><label for="Modelo">Marca</label>
+                                    <input name="Modelo" value="<?php echo $row_equipamento->TXT_MARCA_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
+                                </div> 
+
+                                <div class="form-group  col-md-3 "><label for="Marca">Modelo</label>
                                     <input name="Marca" value="<?php echo $row_equipamento->TXT_MODELO_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
                                 </div>                        
-                                <div class="form-group input-group-sm col-md-2 "><label for="Modelo">Marca</label>
-                                    <input name="Modelo" value="<?php echo $row_equipamento->TXT_MARCA_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
-                                </div>                        
-                                <div class="form-group input-group-sm col-md-3 "><label for="Placa">Serial</label>
+                                                       
+                                <div class="form-group  col-md-3 "><label for="Placa">Serial</label>
                                     <input name="Placa" value="<?php echo $row_equipamento->TXT_SERIAL_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                                 </div>    
                         <?php }?>
                         <!--fim identificacao da frota-->
-                        <div class="form-group col-md-12 col-sm-6"><label>Dados Gerais Frota</label>
-                        <input title="DADOS GERAIS DA FROTA DA ORDEM DE SERVICO" value="<?php echo $row->TXT_DADOSGERAIS_OS ?>" readonly="readonly" class="form-control" readonly /></div> 
+                        
+                        <div class="form-group col-md-3 col-sm-6"><label>Atendimento</label>
+                        <input title="TIPO DE ATENDIMENTO" value="<?php echo  $row->TXT_TIPO_ATENDIMENTO_OS ?>" readonly="readonly" class="form-control" readonly /> </div> 
+
+                        
+                        <div class="form-group col-md-9 col-sm-6"><label>Dados Gerais do equipamento</label>
+                        <input title="DADOS GERAIS DA FROTA DA ORDEM DE SERVICO" value="<?php echo $row->TXT_DADOSGERAIS_OS ?>" readonly="readonly" class="form-control" readonly />
+                        </div> 
 
                         <div class="form-group col-md-12 col-sm-6"><label>Solicitacoes</label>
                         <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $row->TXT_RECLAMACAO_OS ?></textarea></div>
+
+                        <div class="form-group col-md-6 col-sm-6"><label>Defeito Constatado pelo Tecnico</label>
+                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $row->TXT_DEFEITO_OS ?></textarea></div>
+
+                        <div class="form-group col-md-6 col-sm-6"><label>Solucao Efetuada pelo tecnico</label>
+                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $row->TXT_RESOLUCAO_OS ?></textarea></div>
                         
                         <div class="form-group col-md-4 col-sm-6"><label>Valor Total</label>
                         <input title="VALOR TOTAL DE SERVICOS E PECAS" value="R$<?php echo number_format($row->VAL_TOTAL_OS,2) ?>" readonly="readonly" class="form-control" readonly /> </div> 
@@ -134,11 +152,15 @@
                                     <select name="servico" class="form-control" title="SELECIONE O SERVICO A SER INCLUIDO"> 
                                         <?php
                                         include "conexao.php"; 
-                                        $sql_servicos=$con->prepare("SELECT NUM_ID_SER, TXT_NOME_SER, VAL_VALOR_SER FROM TBL_SERVICO_SER WHERE TXT_ATIVO_SER = 'SIM' ORDER BY TXT_NOME_SER");
-                                        $sql_servicos->execute();
-                                            while($sqlResultFim = $sql_servicos->fetch(PDO::FETCH_OBJ)){?>
-                                                <option value="<?php echo $sqlResultFim->NUM_ID_SER ?>"> <?php echo $sqlResultFim->TXT_NOME_SER ?></option>
-                                            <?php } ?>
+                                            if($tipoCLiente=='FISICA'){
+                                                $sql_servicos=$con->prepare("SELECT NUM_ID_SER, TXT_NOME_SER, VAL_FISICA_SER FROM TBL_SERVICO_SER WHERE TXT_ATIVO_SER = 'SIM' ORDER BY TXT_NOME_SER");
+                                            }else{
+                                                $sql_servicos=$con->prepare("SELECT NUM_ID_SER, TXT_NOME_SER, VAL_JURIDICA_SER FROM TBL_SERVICO_SER WHERE TXT_ATIVO_SER = 'SIM' ORDER BY TXT_NOME_SER");
+                                            }
+                                                $sql_servicos->execute();
+                                                    while($sqlResultFim = $sql_servicos->fetch(PDO::FETCH_OBJ)){?>
+                                                        <option value="<?php echo $sqlResultFim->NUM_ID_SER ?>"> <?php echo $sqlResultFim->TXT_NOME_SER ?></option>
+                                                    <?php } ?>
                                     </select> 
                                 </div>                                
                                 <div class="form-group col-md-2 col-sm-2">
@@ -161,7 +183,7 @@
                         <th>Final</td>
                         <th>Inicio</td>
                         <th>Termino</td>                        
-                        <th>Mecanico</td>
+                        <th>Tecnico</td>
                         <th>Status</td> 
                         <th>Opcoes</td>       
                   </tr>
@@ -184,15 +206,15 @@
                           <td>R$ <?php echo number_format($rowItem->VAL_DESCONTO_SERVICO_OS,2) ?></td>
                           <td>R$ <?php echo number_format($rowItem->VAL_VALOR_FINAL_SERVICO_OS,2) ?></td>
                           <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_INICIO_SERVICO_OS)) ?></td>					
-                          <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_FINAL_SERVICO_OS)) ?></td>
+                          <td><?php echo date("d/m/Y  H:i:s",strtotime($rowItem->DTH_TERMINO_SERVICO_OS)) ?></td>
                           <!--Buscar nome do mecanico-->
                           <?php
-                            $idMecanico = $rowItem->TBL_MECANICO_MEC_NUM_ID_MEC;
-                            $sqlNomeMecanico = $con->prepare("SELECT TXT_CODIGO_MEC FROM TBL_MECANICO_MEC WHERE NUM_ID_MEC = '$idMecanico'");
-                            $sqlNomeMecanico->execute();
-                            $nomeMecanico = $sqlNomeMecanico->fetchColumn()
+                            $idTecnico = $rowItem->TBL_TECNICO_TEC_NUM_ID_TEC;
+                            $sqlNomeTecnico = $con->prepare("SELECT TXT_CODIGO_TEC FROM TBL_TECNICO_TEC WHERE NUM_ID_TEC = '$idTecnico'");
+                            $sqlNomeTecnico->execute();
+                            $nomeTecnico = $sqlNomeTecnico->fetchColumn()
                           ?>
-                          <td><?php echo $nomeMecanico ?></td>
+                          <td><?php echo $nomeTecnico ?></td>
                           <td><?php echo $rowItem->TXT_STATUS_SERVICO_OS ?></td>
                           <td>
                         
@@ -200,7 +222,7 @@
                             <div class="btn-group dropleft">
                               <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opcoes</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="atribuir-mecanico.php?id=<?php echo $valor ?>&id_item_servico=<?php echo $rowItem->NUM_ID_SERVICO_OS ?>">Mecanico</a>
+                                    <a class="dropdown-item" href="atribuir-tecnico.php?id=<?php echo $valor ?>&id_item_servico=<?php echo $rowItem->NUM_ID_SERVICO_OS ?>">Tecnico</a>
                                     <?php if($rowItem->TXT_STATUS_SERVICO_OS=='AGUARDANDO APROVACAO'){ ?>
                                         <a class="dropdown-item" href="processa-os.php?acao=aprovarservico&id=<?php echo $valor ?>&id_item_servico=<?php echo $rowItem->NUM_ID_SERVICO_OS ?>">Aprovar</a>
                                         <a class="dropdown-item" href="desconto-servico.php?id=<?php echo $valor ?>&id_item_servico=<?php echo $rowItem->NUM_ID_SERVICO_OS ?>">Desconto</a>
@@ -330,9 +352,20 @@
         <td>
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <a href="processa-os.php?acao=encerraros&idos=<?php echo $valor ?>&statusOs=<?php echo $statusOs ?>" class="btn btn-outline-success btn-block"  >Encerrar OS</a></div>
+                        <a href="cadastro-defeito.php?idos=<?php echo base64_encode($valor) ?>" class="btn btn-outline-danger btn-block"  >Registrar Defeito</a>
+                    </div>
+
                     <div class="form-group col-md-2">
-                        <a href="relatorio-os.php?id=<?php echo $valor?>" target="_blank" class="btn btn-outline-warning btn-block" >Imprimir OS</a></div>
+                        <a href="cadastro-solucao.php?idos=<?php echo base64_encode($valor) ?>" class="btn btn-outline-primary btn-block"  >Registrar Solucao</a>
+                    </div>
+                    
+                    <div class="form-group col-md-2">
+                        <a href="relatorio-os.php?id=<?php echo base64_encode($valor)?>" target="_blank" class="btn btn-outline-warning btn-block" >Imprimir OS</a>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <a href="processa-os.php?acao=encerraros&idos=<?php echo base64_encode($valor) ?>&statusOs=<?php echo base64_encode($statusOs) ?>" class="btn btn-outline-success btn-block"  >Encerrar OS</a>
+                    </div>
                 </div>
         </td>
     </tr>               

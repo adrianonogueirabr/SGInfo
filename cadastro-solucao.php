@@ -8,7 +8,7 @@
 <body>
 <?php 
 include "conexao.php";
-$id_os = $_GET["os"]; 
+$id_os = base64_decode($_GET["idos"]); 
 
 $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$id_os'");	
 
@@ -20,32 +20,33 @@ if(! $res->execute() ){
 
 <form name="os" action="processa-os.php?acao=cadastrar_solucao" method="post" onSubmit="return validaForm()">
 <INPUT TYPE="hidden" NAME="id_os" VALUE="<?php echo $id_os ?>" />
-<table class="table">
+<table width="100%" class="table">
     <tr>
-	    <td> <?php include "inicial.php"?> </td>
-	</tr>
-   <tr><td class=" table-primary"><h4>Alterar/Registrar Solução</h4></td></tr>
-</table>
-<table width="90%" align="center">
-<tr>
-<td>
-      
-    <?php 		
-	   while ($row = $res->fetch(PDO::FETCH_OBJ)){	 
-	  ?>
-        <td>
-        <div class="form-row">
-        <div class="form-group col-md-12 col-sm-12">
-        <textarea name="solucao" class="form-control" id="solucao" rows="3" title="INFORME A SOLUCAO DO DEFEITO"><?php echo $row->TXT_RESOLUCAO_OS ?></textarea> 
-        </div>
+	      <td> <?php include "inicial.php"?> </td>
+	  </tr>
+    <tr>
+        <td><h4 class="p-4 table-primary">Alterar ou Registrar Solucao<h4></td>
+    </tr>
+  	<tr>
+        <td>      
+          <?php 		
+          while ($row = $res->fetch(PDO::FETCH_OBJ)){	 
+          ?>
+              
+              
+              <div class="form-group col-md-12 col-sm-12">
+              <textarea name="resolucao" class="form-control" id="resolucao" rows="3" title="INFORME A SOLUCAO DO DEFEITO"><?php echo $row->TXT_RESOLUCAO_OS ?></textarea> 
+              </div>
 
-        
-    <div class="form-group col-md-2 col-sm-12">
-    <input class=" btn btn-primary btn-block" type="submit" name="registrar"  value="Registrar Solucao" title="Clique para Registrar Solucao" /> 
-    <a href="listagem-apontamento.php?id=<?php echo $id_os?>" class="btn btn-danger btn-block" title="Clique para cancelar ação">Cancelar</a>   
-    </div>
-    </div>
 
+              <div class="form-row">
+                  <div class="form-group col-md-2">
+                      <input class=" btn btn-outline-success btn-block" type="submit"  value="Registrar Solucao" title="CLIQUE PARA REGISTRAR SOLUCAO" /> 
+                  </div>
+                  <div class="form-group col-md-2">
+                      <a href="listagem-apontamento.php?id=<?php echo $id_os?>" class="btn btn-outline-danger btn-block" title="CLIQUE PARA CANCELAR E VOLTAR AO APONTAMENTO">Cancelar</a>
+                  </div>
+              </div>
       </tr>
     </td>
     </table>

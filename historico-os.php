@@ -23,16 +23,13 @@
 ?>
 
 <form name="listagem" method="post">
-
-<table width="100%">
+<table width="100%" class="table responsive">
   <tr>
-      <td>
-      <?php include "inicial.php" ?>
-      <legend>
-          <h4>
-              Encontradas: Total <?php echo $res->rowCount()?> Cliente: <?php echo $nome_cliente ?>
-          <h4>
-     </legend>
+      <td><?php include "inicial.php" ?>
+  </tr>
+  <tr>
+		  <td><legend class="p-4 table-primary">Encontradas: Total <?php echo $res->rowCount()?><legend></td>
+	</tr>
             <div class="form-group col-sm-12 col-md-2">
                 <a href="cadastro-os.php?id_equip=<?php echo base64_encode($valor) ?> &id_cliente_equip=<?php echo base64_encode($id_cliente_equip)?>&nome_cliente=<?php echo base64_encode($nome_cliente) ?>" class="btn btn-primary btn active btn-block" role="button" aria-pressed="true">Registrar OS</a>
              </div>
@@ -41,8 +38,8 @@
     <tr>
     <td>
           
-    <table width="100%" class="table-hover table table-condensed table-bordered table-striped table-sm">
-          <tr  class="table-primary">	
+    <table class="table-hover table  table-bordered responsive">
+          <tr class="table-success" align="center">	
             <th scope="col">OS</th>
             <th scope="col">STATUS</th>
             <th scope="col">CLIENTE</th>

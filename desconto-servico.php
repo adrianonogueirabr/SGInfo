@@ -56,14 +56,16 @@ include "conexao.php";
     </tr>
     <tr>
         <td>
-        <div class="form-row">
+            <div class="form-row">
                     <div class="form-group col-md-2">
-                        <button type="submit" class="btn btn-outline-success btn-block" >Aplicar Desconto</button></div>
-                    <div class="form-group col-md-2">
-                        <a href="listagem-apontamento.php?id=<?php echo $id_os?>" class="btn btn-outline-warning btn-block" >Cancelar</a></div>
+                        <button type="submit" class="btn btn-outline-success btn-block" >Aplicar Desconto</button>
                     </div>
-                </td>
-                </tr>
+                    <div class="form-group col-md-2">
+                        <a href="listagem-apontamento.php?id=<?php echo $id_os?>" class="btn btn-outline-warning btn-block" >Cancelar</a>
+                    </div>
+            </div>
+        </td>
+    </tr>
 </table>
     <script type="text/javascript" src="javascript/descontos.js"></script> 
 </form>

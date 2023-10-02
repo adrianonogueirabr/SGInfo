@@ -149,6 +149,14 @@
                         <input name="Solicitacoes" value="<?php echo $rowOs->TXT_RECLAMACAO_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div> 
 
+                    <div class="form-group input-group-sm col-md-6"><label>Defeito Constatado pelo Tecnico</label>
+                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $rowOs->TXT_DEFEITO_OS ?></textarea>
+                    </div>
+
+                        <div class="form-group input-group-sm col-md-6"><label>Solucao Efetuada pelo tecnico</label>
+                        <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $rowOs->TXT_RESOLUCAO_OS ?></textarea>
+                    </div>
+
                     <div class="form-group col-md-4 input-group-sm"><label>Valor Total</label>
                         <input title="VALOR TOTAL DE SERVICOS E PECAS" value="R$<?php echo number_format($rowOs->VAL_TOTAL_OS,2) ?>" readonly="readonly" class="form-control" readonly /> </div> 
 

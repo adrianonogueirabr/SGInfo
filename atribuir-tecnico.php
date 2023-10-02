@@ -19,7 +19,7 @@ include "conexao.php";
 	    <td> <?php include "inicial.php"?> </td>
 	</tr>
     <tr>
-        <td><h4 class="p-4 table-primary">Atribuir Mecanico<h4></td>
+        <td><h4 class="p-4 table-primary">Atribuir Tecnico<h4></td>
     </tr>
 </table>
 <table width="100%" align="center" class="table">
@@ -42,14 +42,14 @@ include "conexao.php";
                     <div class="form-group col-md-7 col-sm-6"><label>Servico</label>
                     <input title="NOME DO SERVICO" name="servico" id="servico" value="<?php echo $nomeServico ?>"  class="form-control" readonly /> </div>
 
-                    <div class="form-group col-md-5 col-sm-10"><label>Mecanico</label>
-                        <select name="mecanico" id="mecanico" class="form-control" title="SELECIONE O MECANICO DO SERVICO"> 
+                    <div class="form-group col-md-5 col-sm-10"><label>Tecnico</label>
+                        <select name="tecnico" id="tecnico" class="form-control" title="SELECIONE O TECNICO DO SERVICO"> 
                                 <?php
                                     include "conexao.php"; 
-                                    $sqlMecanicos=$con->prepare("SELECT NUM_ID_MEC, TXT_NOME_MEC FROM TBL_MECANICO_MEC WHERE TXT_ATIVO_MEC = 'SIM' ORDER BY TXT_NOME_MEC");
+                                    $sqlMecanicos=$con->prepare("SELECT NUM_ID_TEC, TXT_NOME_TEC FROM TBL_TECNICO_TEC WHERE TXT_ATIVO_TEC = 'SIM' ORDER BY TXT_NOME_TEC");
                                     $sqlMecanicos->execute();
                                     while($sqlResultFim = $sqlMecanicos->fetch(PDO::FETCH_OBJ)){?>
-                                        <option value="<?php echo $sqlResultFim->NUM_ID_MEC ?>"> <?php echo $sqlResultFim->TXT_NOME_MEC ?></option>
+                                        <option value="<?php echo $sqlResultFim->NUM_ID_TEC ?>"> <?php echo $sqlResultFim->TXT_NOME_TEC ?></option>
                                 <?php } ?>
                         </select> 
                     </div> 
