@@ -52,7 +52,7 @@ include "conexao.php";
 			}
 			
 			//REGISTRANDO O TITULO A RECEBER
-			$sql = $con->prepare("INSERT INTO TBL_TITULORECEBER_TR VALUES (NULL,$empresa_usuario,'$id_usuario','$id_cliente', now(), '$datavencimento1','$id_os','$valorfinal',0,0,0,'$valorfinal',0,'$valorfinal',NULL,0,'ABERTO')"); 
+			$sql = $con->prepare("INSERT INTO TBL_TITULORECEBER_TR VALUES (NULL,$empresa_usuario,'$id_usuario','$id_cliente', now(), '$datavencimento1','$id_os','$valorfinal',0,0,0,'$valorfinal',0,'$valorfinal',NULL,'ABERTO')"); 
 			if(! $sql->execute() )
 			{
 			  die('Houve um erro no processamento da transação: ' . mysqli_error());

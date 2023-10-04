@@ -6,8 +6,13 @@
 	
       include "conexao.php";
 
-        $valor = $_POST["valor"];
-        $criterio = $_POST["criterio"];
+        if($valor = $_POST["valor"]==""){
+            $valor = base64_decode($_GET["id_e"]);
+            $criterio = "E";
+        }else{
+            $valor = $_POST["valor"];
+            $criterio = $_POST["criterio"];
+        }
       
       if($criterio == "C"){
           $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_CLIENTE_CLI_NUM_ID_CLI = '$valor' ORDER BY NUM_ID_OS DESC");
@@ -83,7 +88,7 @@
           <?php
 			while ($row = $res->fetch(PDO::FETCH_OBJ)){			
 		  ?>
-          <?php $dataatual = date("Y-m-d"); if($row->DTA_FIMGARANTIA_OS>=$dataatual){ ?> <tr class="table-warning"> <?php } else {?> <tr title="<?php echo $row->TXT_SOLICITACOES_OS;  ?>" > <?php } ?>
+          <?php $dataatual = date("Y-m-d"); if($row->DTA_FIMGARANTIA_OS>=$dataatual){ ?> <tr class="table-warning"> <?php } else {?> <tr title="<?php echo $row->TXT_RECLAMACAO_OS ?>" > <?php } ?>
           
             <td align="center"><?php echo $row->NUM_ID_OS ?></td>
             <td align="center"><?php echo $row->TXT_STATUS_OS ?></td>
@@ -102,7 +107,7 @@
 			      ?>
             <td><?php echo $nome ?></td>  
 
-            <td><?php echo mb_substr( $row->TXT_RECLAMACAO_OS, 0, 100, 'ISO-8859-1'); ?>...</td>
+            <td><?php echo mb_substr( $row->TXT_RECLAMACAO_OS, 0, 40, 'ISO-8859-1'); ?>...</td>
             <td>R$<?php echo number_format($row->VAL_TOTAL_OS,2) ?></td>
             <td>R$<?php echo number_format($row->VAL_DESCONTO_OS,2) ?></td>
             <td>R$<?php echo number_format($row->VAL_FINAL_OS,2) ?></td>

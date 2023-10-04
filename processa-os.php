@@ -149,9 +149,9 @@ case "salvar":
 break;
 case "incluirservico":	
 
-	$id_os = $_POST['id'];
-	$id_servico = $_POST['servico'];
-	$pessoa_cliente = $_POST['pessoa_cliente'];
+	 $id_os = $_POST['id'];
+	 $id_servico = $_POST['servico'];
+	 $pessoa_cliente = $_POST['pessoa_cliente'];
 
 	if($pessoa_cliente=='FISICA'){
 		$buscarPreco = $con->prepare("SELECT VAL_FISICA_SER FROM TBL_SERVICO_SER WHERE NUM_ID_SER = ?");

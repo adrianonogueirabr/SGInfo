@@ -64,11 +64,8 @@
                             while($row_nome = $sql_nome->fetch(PDO::FETCH_OBJ)){
                                 //capturando tipo do cliente para estipular precos
                                 $tipoCLiente = $row_nome->TXT_PESSOA_CLI;
+                                $pessoa_cliente =  $row_nome->TXT_PESSOA_CLI ;
                         ?>
-                            <!-- adcionado em 21/01/2019	codigo para capturar tpo de pessoa cliente-->
-                            <input type="hidden" name="pessoa_cliente" id="pessoa_cliente" value="<?php echo $row_nome->TXT_PESSOA_CLI ?>" />
-
-
                             <div class="form-group  col-md-6 col-sm-6"><label>Cliente</label>
                             <input title="CLIENTE DA ORDEM DE SERVICO" value="<?php echo $row_nome->TXT_RAZAO_CLI ?>" readonly="readonly" class="form-control" readonly /> </div>                    
                         <?php } ?>                   
@@ -147,6 +144,8 @@
                         <!--LIstagem de Servicos para incluir na OS-->
                         <form name="servicos" method="post" action="processa-os.php?acao=incluirservico">
                         <input type="hidden" name="id" id="id" value="<?php echo $valor ?>" />
+                        <input type="hidden" name="pessoa_cliente" id="pessoa_cliente" value="<?php echo $pessoa_cliente ?>" />
+
                             <div class="form-row">
                                 <div class="form-group col-md-10 col-sm-10">
                                     <select name="servico" class="form-control" title="SELECIONE O SERVICO A SER INCLUIDO"> 

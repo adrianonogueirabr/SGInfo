@@ -9,12 +9,17 @@ $id_os = base64_decode($_GET["idos"]);
 $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$id_os' AND TXT_STATUS_OS = 'ANDAMENTO'");	
 
 if(! $res->execute() ){
-    die('Houve um erro no processamento da transação: ' . mysqli_error());}		
+    die('Houve um erro no processamento da transação: ' . mysqli_error());
+}
+
+if($res->rowCount()==0){
+    echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar em Andamento!\");</script>";    
+}
 ?>
 
-<form name="os" action="processa-os.php?acao=cadastrar_defeito" method="post" onSubmit="return validaForm()">
+<form name="cadastro-defeito" action="processa-os.php?acao=cadastrar_defeito" method="post" onSubmit="return validaForm()">
 <INPUT TYPE="hidden" NAME="id_os" VALUE="<?php echo $id_os ?>" />
-<table width="100%" class="table">
+<table  class="table">
     <tr>
 	      <td> <?php include "inicial.php"?> </td>
 	  </tr>
@@ -25,8 +30,7 @@ if(! $res->execute() ){
         <td>
             <?php 		
             while ($row = $res->fetch(PDO::FETCH_OBJ)){	 
-            ?>
-            
+            ?>            
                 <div class="form-group col-md-12 col-sm-12">
                     <textarea class="form-control" name="defeito" id="defeito" rows="3" title="INFORME O DEFEITO DO EQUIPAMENTO"><?php echo $row->TXT_DEFEITO_OS ?></textarea>
                 </div>
@@ -46,5 +50,6 @@ if(! $res->execute() ){
 
 </form>
 <?php } ?>
+    <script type="text/javascript" src="javascript/cadastro-defeito.js"></script>
 </body>
 </html>

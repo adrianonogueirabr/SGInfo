@@ -78,7 +78,7 @@
                   <?php //mensagem para exibicao de data de registro e alteracao do cliente 
                       $dataRegistro = date("d/m/Y  H:i:s",strtotime($row->DTH_REGISTRO_CLI));
                       $dataAlteracao = date("d/m/Y  H:i:s",strtotime($row->DTH_ALTERACAO_CLI));
-                     $MensagemPopover = "Registro: echo $dataRegistro | Alteracao: $dataAlteracao";  
+                     $MensagemPopover = "Registro: $dataRegistro | Alteracao: $dataAlteracao";  
                   ?>            
                   <td><a href="#" data-toggle="popover" title="Cronologia do Cliente" data-content="<?php echo $MensagemPopover ?>">DATAS</a></td>
                   <td>

@@ -91,7 +91,7 @@
                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="detalhes-equipamentos.php?id=<?php echo base64_encode($row->NUM_ID_EQUIP)?>">Detalhes</a>
                             <a class="dropdown-item" href="cadastro-os.php?id_e=<?php echo base64_encode($row->NUM_ID_EQUIP) ?>&id_c=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nc=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Abrir OS</a>
-                            <a class="dropdown-item" href="historico-os.php?valor=<?php echo $row->NUM_ID_EQUIP; ?>&id_cliente_equip=<?php echo base64_encode($row->TBL_CLIENTE_CLI_NUM_ID_CLI)?>&nome_cliente=<?php echo base64_encode($row->TXT_RAZAO_CLI)?>">Histórico de OS</a> 
+                            <a class="dropdown-item" href="listagem-os.php?id_e=<?php echo base64_encode($row->NUM_ID_EQUIP) ?>">Histórico de OS</a> 
                           </div>
                       </div>
                   </td>

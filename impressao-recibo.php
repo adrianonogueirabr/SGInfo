@@ -80,7 +80,7 @@
     <td colspan="5">
     <table width="100%"  cellpadding="3" cellspacing="3">          
           
-              <tr><td rowspan="4"><img src="imagens/logo_ofc.png" width="250" height="110" /></td>
+              <tr><td rowspan="4"><img src="imagens/logo techfy.png" width="250" height="110" /></td>
               <td ><label><?php echo $nomeEmpresa?></label></td> </tr>
               <tr><td><label><?php echo $logradouro?> N<?php echo $numero ?>, <?php echo $bairro ?>, <?php echo $cidade ?>-<?php echo $estado ?></label></td></tr>
               <tr><td><label><?php echo $email ?></label></td></tr>
@@ -151,7 +151,7 @@
     <td colspan="5">
     <table width="100%">   
               
-              <tr><td rowspan="4"><img src="imagens/logo_ofc.png" width="250" height="110" /></td>
+              <tr><td rowspan="4"><img src="imagens/logo techfy.png" width="250" height="110" /></td>
               <td ><label><?php echo $nomeEmpresa ?></label></td> </tr>
               <tr><td><label><?php echo $logradouro ?> N<?php echo $numero ?>, <?php echo $bairro ?>, <?php echo $cidade?>-<?php echo $estado ?></label></td></tr>
               <tr><td><label><?php echo $email ?></label></td></tr>
