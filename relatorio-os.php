@@ -51,42 +51,35 @@
                     <?php } ?> 
         </td>          
     </tr>
-    <tr>
-        <td colspan="2" align="center">
-            <h3>Impressao de Ordem de Servico</h3>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><h4>Dados de Cliente</h4>             
+</table>            
+        <legend align="center"><h3>Impressao de Ordem de Servico</h3></legend>
+            <h4>Dados de Cliente</h4>             
                 <?php	//seleciona nome e telefone do cliente da ordem de servico
                   $cli = $rowOs->TBL_CLIENTE_CLI_NUM_ID_CLI;
                   $sql_nome = $con->prepare("SELECT TXT_RAZAO_CLI,TXT_TELEFONE_CLI, TXT_EMAIL_CLI  FROM TBL_CLIENTE_CLI WHERE NUM_ID_CLI = '$cli'");
                   $sql_nome->execute();
                   while($row_nome = $sql_nome->fetch(PDO::FETCH_OBJ)){
                 ?>                       
-                    <div class="form-row">
+                    <div class="form-row ">
                         <div class="form-group col-md-2 input-group-sm mb-3 ">
-                          <label for="id">ID</label>              
+                          <label for="id"><strong>ID</strong></label>              
                           <input name="id"value="<?php echo $rowOs->TBL_CLIENTE_CLI_NUM_ID_CLI; ?>" readonly="readonly" class="form-control"  />        
                         </div> 
                         <div class="form-group input-group-sm col-md-5 ">
-                            <label for="Nome">Nome</label>
+                            <label for="Nome"><strong>Nome</strong></label>
                             <input name="Nome" value="<?php echo $row_nome->TXT_RAZAO_CLI; ?>" readonly="readonly" class="form-control"  />   		      
                         </div> 
                         <div class="form-group input-group-sm col-md-2 ">
-                            <label for="telefone">Telefone</label>
+                            <label for="telefone"><strong>Telefone</strong></label>
                             <input name="telefone" value="<?php echo $row_nome->TXT_TELEFONE_CLI; ?>" readonly="readonly" class="form-control"  />    		      
                         </div> 
                         <div class="form-group input-group-sm col-md-3 ">
-                            <label for="tipo">Email</label>
+                            <label for="tipo"><strong>Email</strong></label>
                             <input name="Email" value="<?php echo $row_nome->TXT_EMAIL_CLI; ?>" readonly="readonly" class="form-control"  />   		      
                         </div> 
                     </div>
                 <?php }//fim nome e telefone do cliente ?> 
-            </td>
-        </tr>
-        <tr>       
-            <td colspan="4"><h4>Dados de  Equipamento</h4>         
+            <h4>Dados de  Equipamento</h4>         
               <?php 
                 $equipamento = $rowOs->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP;
                 //select para pegar tipo de equipamento e serial E.TXT_TIPO_EQUIP, E.TXT_MODELO_EQUIP,E.TXT_SERIAL_EQUIP,
@@ -100,60 +93,57 @@
     
                 while($row_equipamento = $sql_equipamento->fetch(PDO::FETCH_OBJ)){?>
 
-                    <div class="form-row" >
-                        <div class="form-group input-group-sm col-md-2 "><label for="Nome">ID</label>
+                    <div class="form-row ">
+                        <div class="form-group input-group-sm col-md-2 "><label for="Nome"><strong>ID</strong></label>
                             <input name="Nome" value="<?php echo $rowOs->TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div>
-                        <div class="form-group input-group-sm col-md-3 "><label for="Tipo">Tipo</label>
+                        <div class="form-group input-group-sm col-md-3 "><label for="Tipo"><strong>Tipo</strong></label>
                             <input name="Tipo" value="<?php echo $row_equipamento->TXT_TIPO_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div> 
-                        <div class="form-group input-group-sm col-md-2 "><label for="Marca">Modelo</label>
-                            <input name="Marca" value="<?php echo $row_equipamento->TXT_MODELO_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
+                        <div class="form-group input-group-sm col-md-2 "><label for="Marca"><strong>Modelo</strong></label>
+                            <input name="Marca" value="<?php echo $row_equipamento->TXT_MODELO_EQUIP ?>" readonly="readonly" class="form-control" />   		      
                         </div>                        
-                        <div class="form-group input-group-sm col-md-2 "><label for="Modelo">Marca</label>
+                        <div class="form-group input-group-sm col-md-2 "><label for="Modelo"><strong>Marca</strong></label>
                             <input name="Modelo" value="<?php echo $row_equipamento->TXT_MARCA_EQUIP ?>" readonly="readonly" class="form-control"  />   		      
                         </div>                        
-                        <div class="form-group input-group-sm col-md-3 "><label for="Placa">Serial</label>
+                        <div class="form-group input-group-sm col-md-3 "><label for="Placa"><strong>Serial</strong></label>
                             <input name="Placa" value="<?php echo $row_equipamento->TXT_SERIAL_EQUIP; ?>" readonly="readonly" class="form-control"  />   		      
                         </div>                        
                       
                     </div>
                 <?php }//fim select pegar dados do equipamento ?>
-            </td>
-        </tr>       
-        <tr>        
-            <td colspan="4"><h4>Dados e Solicitacoes</h4>              
-                <div class="form-row">
+                <h4>Dados e Solicitacoes</h4>              
+                <div class="form-row ">
                     <div class="form-group input-group-sm col-md-3 ">
-                        <label for="ID">ID</label>
+                        <label for="ID"><strong>ID</strong></label>
                         <input name="ID" value="<?php echo $rowOs->NUM_ID_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div>
                     <div class="form-group input-group-sm col-md-3 ">
-                        <label for="Tipo">Tipo</label>
+                        <label for="Tipo"><strong>Tipo</strong></label>
                         <input name="Tipo" value="<?php echo $rowOs->TXT_TIPO_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div>
                     <div class="form-group input-group-sm col-md-6 ">
-                        <label for="Consultor">Consultor</label>
+                        <label for="Consultor"><strong>Consultor</strong></label>
                             <?php   //selecionar o login do usuario que executou a ordem de servico
                                 $usu = $rowOs->TBL_USUARIO_USU_NUM_ID_USU;
                                 $sql_login = $con->prepare("SELECT TXT_NOME_USU FROM TBL_USUARIO_USU WHERE NUM_ID_USU = '$usu'");
                                 $sql_login->execute();
-                                $nomeTecnico = $sql_login->fetchColumn();
+                                $nomeConsultor = $sql_login->fetchColumn();
                             ?>
-                            <input name="Consultor" value="<?php echo $nomeTecnico; ?>" readonly="readonly" class="form-control"  />   		      
+                            <input name="Consultor" value="<?php echo $nomeConsultor; ?>" readonly="readonly" class="form-control"  />   		      
                     </div>
-                    <div class="form-group input-group-sm col-md-12 "><label for="DadosGerais">Dados Gerais</label>
+                    <div class="form-group input-group-sm col-md-12 "><label for="DadosGerais"><strong>Dados Gerais</strong></label>
                         <input name="DadosGerais" value="<?php echo $rowOs->TXT_DADOSGERAIS_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div> 
-                    <div class="form-group input-group-sm col-md-12 "><label for="Solicitacoes">Solicitacoes</label>
+                    <div class="form-group input-group-sm col-md-12 "><label for="Solicitacoes"><strong>Solicitacoes</strong></label>
                         <input name="Solicitacoes" value="<?php echo $rowOs->TXT_RECLAMACAO_OS; ?>" readonly="readonly" class="form-control"  />   		      
                     </div> 
 
-                    <div class="form-group input-group-sm col-md-6"><label>Defeito Constatado pelo Tecnico</label>
+                    <div class="form-group input-group-sm col-md-12"><label><strong>Defeito Constatado pelo Tecnico</strong></label>
                         <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $rowOs->TXT_DEFEITO_OS ?></textarea>
                     </div>
 
-                        <div class="form-group input-group-sm col-md-6"><label>Solucao Efetuada pelo tecnico</label>
+                        <div class="form-group input-group-sm col-md-12"><label><strong>Solucao Efetuada pelo tecnico</strong></label>
                         <textarea name="textarea" class="form-control"  disabled="disabled" id="textarea"><?php echo $rowOs->TXT_RESOLUCAO_OS ?></textarea>
                     </div>
 
@@ -166,12 +156,8 @@
                         <div class="form-group col-md-4 input-group-sm"><label>Valor Final</label>
                         <input title="VALOR FINAL A SER PAGO" value="R$<?php echo number_format($rowOs->VAL_FINAL_OS,2) ?>" readonly="readonly" class="form-control" readonly /> </div> 
                     <?php	//CAPTURA DATA INICIO E ENCERRAMENTO DA ORDEM DE SERVICO
-                    $data_inicio = $rowOs->DTH_ABERTURA_OS; $data_final =  $rowOs->DTH_ENCERRAMENTO_OS; $fimgarantia = $rowOs->DTA_FIMGARANTIA_OS; } ?>
-    
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
+                    $data_inicio = $rowOs->DTH_ABERTURA_OS; $data_final =  $rowOs->DTH_ENCERRAMENTO_OS; $fimgarantia = $rowOs->DTA_FIMGARANTIA_OS; } ?>    
+           
             <div class="table-responsive">      
                 <table class=" table table-striped table-bordered table-sm">               
                         <thead class="thead-dark">      
@@ -220,10 +206,7 @@
                         <?php }  ?> 
               </table>
                                 </div>            
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
+           
             <div class="table-responsive">     
               <table width="100%" class=" table table-striped table-bordered table-sm ">                  
                   <thead class="thead-dark">        
@@ -264,10 +247,7 @@
                    </tbody>
               </table>            
                           </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
+
                 <p class="lead sm">**Confirmo realização dos servicos acima listados tendo inicio no dia (<?php echo date("d/m/Y",strtotime($data_inicio)) ?>) e encerramento ao dia (<?php if($data_final<>""){echo date("d/m/Y",strtotime($data_final)) ;}?>).
             
                 Informo que no dia (<?php if($fimgarantia<>""){echo date("d/m/Y",strtotime($fimgarantia)) ;}?>) ocorrerá termino da garantia de servico.
@@ -275,9 +255,7 @@
                 Nossa garantia nao cobre mau uso, ou alterações indevidas no veiculo**</p>
                 
                 <img src="imagens/assinaturas.png" width="100%" height="80" />
-            </td>
-        </tr>
-</table>
+
 </body>
 </html>
 

@@ -12,6 +12,8 @@ include "verifica.php";
 		$reclamacao					=$_POST["reclamacao"];
 		$previsao					=$_POST['previsao'];	
 		$km							=$_POST['km'];	
+		
+
 		//$cancelamento				=strtoupper($_POST["cancelamento"]);
 
 	//funcao para atualizar valores na ordem de servico			
@@ -549,6 +551,33 @@ case "cadastrar_solucao":
 		$_SESSION['msg'] = "<div class='alert alert-success'>Registro de solucao realizado com sucesso!</div>"; 
 		header("Location: listagem-apontamento.php?id=$id");
 
+break;
+case "corrigeapontamento":
+	//corrigir dados de apontamento apontamento
+	$data1						=$_POST["data1"];
+	$hora1						=$_POST["hora1"];
+	$datahoraInicio = new DateTime($data1 .  $hora1);
+	$datahoraInicioConv = $datahoraInicio->format('Y-m-d H:i:s');
+
+	$data2						=$_POST["data2"];
+	$hora2						=$_POST["hora2"];
+	$datahoraTermino = new DateTime($data2 .  $hora2);
+	$datahoraTerminoConv = $datahoraTermino->format('Y-m-d H:i:s');
+
+	 $id_item_os					=$_POST["id_item_os"];
+
+	$sql_atualiza_item = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET DTH_INICIO_SERVICO_OS = ?, DTH_TERMINO_SERVICO_OS = ?  where `NUM_ID_SERVICO_OS`=?");
+	 $datahoraInicioConv; 
+	 $datahoraTerminoConv;
+
+	$sql_atualiza_item->bindParam(1,$datahoraInicioConv);
+	$sql_atualiza_item->bindParam(2,$datahoraTerminoConv);
+	$sql_atualiza_item->bindParam(3,$id_item_os);
+
+	if(! $sql_atualiza_item->execute()){die('Houve um erro no processamento da transação: ' . mysqli_error());}
+
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=corrigir-apontamento.php'><script type=\"text/javascript\">alert(\"Apontamento alterado com sucesso!\");</script>";	
+	
 break;
 default:
 		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Erro ao capturar acao!\");</script>";	

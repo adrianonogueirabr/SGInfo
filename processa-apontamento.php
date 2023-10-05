@@ -13,8 +13,10 @@ include "verifica.php";
 		$id_servico_apontamento		=$_POST["id_servico_apontamento"];
 		$data1						=$_POST["data1"];
 		$hora1						=$_POST["hora1"];
+		$datahoraInicio = $data1 .' ' .  $hora1;
 		$data2						=$_POST["data2"];
 		$hora2						=$_POST["hora2"];
+		$datahoraTermino = $data2 .' ' .  $hora2;
 		$id_item_os					=$_POST["id_item_os"];
 		
 include "conexao.php";
@@ -144,7 +146,7 @@ if($acao == "adcionar"){
 									if($row_status > 0){
 										echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'><script type=\"text/javascript\">alert(\"Ordem de Servico possui item am aberto!\");</script>";										
 									}else{
-										$sql_update_status_os = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'TE',DTA_ENCERRAMENTO_OS = now() , HOR_ENCERRAMENTO_OS = current_time(), DTA_FIMGARANTIA_OS = DATE_ADD(CURDATE(), INTERVAL 90 DAY) WHERE NUM_ID_OS = '$id_os'");
+										$sql_update_status_os = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'TERMINADO',DTA_ENCERRAMENTO_OS = now() , HOR_ENCERRAMENTO_OS = current_time(), DTA_FIMGARANTIA_OS = DATE_ADD(CURDATE(), INTERVAL 90 DAY) WHERE NUM_ID_OS = '$id_os'");
 										if(! $sql_update_status_os->execute()){die('Houve um erro no processamento da transacao: ' . mysqli_error());}
 
 										$sql_atualiza_status_os_contrato_pg = $con->prepare("SELECT TXT_TIPO_OS FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = $id_os");
@@ -152,7 +154,7 @@ if($acao == "adcionar"){
 													
 												$status_os_contrato = $sql_atualiza_status_os_contrato_pg->fetchColumn();
 														if($status_os_contrato=='C' || $status_os_contrato=='G'){
-															$sql_update_status_os_contrato_pg = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'PG' WHERE NUM_ID_OS = '$id_os'");
+															$sql_update_status_os_contrato_pg = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'PAGO' WHERE NUM_ID_OS = '$id_os'");
 															$sql_update_status_os_contrato_pg->execute();
 														}
 											
@@ -162,7 +164,7 @@ if($acao == "adcionar"){
 						break;							
 						default:
 								echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=listagem-apontamento.php?id=$id_os'>
-								<script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar AN = ANDAMENTO, atualmente: $status_os!\");</script>";
+								<script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar  ANDAMENTO, atualmente: $status_os!\");</script>";
 						break;						
 					}
 	
@@ -179,21 +181,15 @@ if($acao == "adcionar"){
 }else if($acao == "corrigeapontamento"){
 	//corrigir dados de apontamento apontamento
 
+	$sql_atualiza_item = $con->prepare("UPDATE TBL_ITEM_SERVICO_OS SET DTH_INICIO_SERVICO_OS = ?, DTH_TERMINO_SERVICO_OS = ?  where `NUM_ID_SERVICO_OS`=?");
 
-$sql_atualiza_item = $con->prepare("UPDATE TBL_ITEMOS_ITOS SET DTA_INICIO_ITOS = ?, DTA_TERMINO_ITOS = ?, HOR_INICIO_ITOS = ?,HOR_TERMINO_ITOS = ?  where `TBL_ORDEMSERVICO_OS_NUM_ID_OS` = ? and `NUM_ID_ITOS`=?");
+	$sql_atualiza_item->bindParam(1,$datahoraInicio);
+	$sql_atualiza_item->bindParam(2,$datahoraTermino);
+	$sql_atualiza_item->bindParam(3,$id_item_os);
 
-$sql_atualiza_item->bindParam(1,$data1);
-$sql_atualiza_item->bindParam(2,$data2);
-$sql_atualiza_item->bindParam(3,$hora1);
-$sql_atualiza_item->bindParam(4,$hora2);
-$sql_atualiza_item->bindParam(5,$id_os_apontamento);
-$sql_atualiza_item->bindParam(6,$id_item_os);
+	if(! $sql_atualiza_item->execute()){die('Houve um erro no processamento da transação: ' . mysqli_error());}
 
-
-
-if(! $sql_atualiza_item->execute()){die('Houve um erro no processamento da transação: ' . mysqli_error());}
-
-echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=corrigir-apontamento.php'><script type=\"text/javascript\">alert(\"Apontamento alterado com sucesso!\");</script>";	
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=corrigir-apontamento.php'><script type=\"text/javascript\">alert(\"Apontamento alterado com sucesso!\");</script>";	
 	
 }
 
