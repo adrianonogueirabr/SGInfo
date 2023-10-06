@@ -55,7 +55,7 @@
   </tr>
   <tr>
       <td>
-      <table class="table-hover table table-bordered  responsive">
+      <table class="table-hover table table-bordered  responsive table-sm">
           <tr class="table-success" align="center">		 
           <th><label>NUMERO</label></th>
           <th><label>REFERENTE</label></th>
@@ -63,7 +63,7 @@
           <th><label>USUARIO</label></th>
           <th><label>CLIENTE</label></th>
           <th><label>VALOR</label></th>
-          <th><label>AÇÕES</label></th>
+          <th><label>OPCOES</label></th>
         </tr>       
        	<?php
 		while ($row = $sqlRecibo->fetch(PDO::FETCH_OBJ)){	

@@ -28,7 +28,7 @@
         LEFT JOIN TBL_USUARIO_USU U
         ON U.NUM_ID_USU = R.TBL_USUARIO_USU_NUM_ID_USU
 
-        WHERE DATE(R.DTH_RECEBIMENTO_REC) BETWEEN '$dtInicial' AND '$dtFinal' ORDER BY NUM_ID_REC");
+        WHERE DATE(R.DTH_RECEBIMENTO_REC) BETWEEN '$dtInicial' AND '$dtFinal' ORDER BY NUM_ID_REC DESC");
 
 		$sqlRecebimento->execute();
 		  if($sqlRecebimento->rowCount()<=0){
@@ -49,7 +49,7 @@
     </tr>
     <tr>
         <td>
-            <table  class="table-hover table  table-bordered responsive">
+            <table  class="table-hover table  table-bordered responsive table-sm">
             <tr  class="table-success" align="center">
             <th>ID</th>
             <th>FORMA PAGTO</th>            

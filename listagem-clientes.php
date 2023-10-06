@@ -54,16 +54,16 @@
 	</tr>
   <tr>
       <td>
-          <table class="table-hover table table-bordered  responsive">
+          <table class="table-hover table table-bordered  responsive table-sm">
               <tr class="table-success" align="center">		  
                   <th scope="col">ID</th>
-                  <th scope="col">Ativo</th>
+                  <th scope="col">ATIVO</th>
                   <th scope="col">CPF/CNPJ</th>
-                  <th scope="col">Razao</th>          
-                  <th scope="col">Telefone</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Data</th>
-                  <th scope="col">Opcoes</th>
+                  <th scope="col">RAZAO</th>          
+                  <th scope="col">TELEFONE</th>
+                  <th scope="col">EMAIL</th>
+                  <th scope="col">DATA</th>
+                  <th scope="col">OPCOES</th>
               </tr>
               <?php
               while ($row = $res->fetch(PDO::FETCH_OBJ)){			

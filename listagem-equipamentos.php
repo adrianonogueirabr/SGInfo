@@ -63,7 +63,7 @@
   </tr>
   <tr>
       <td>
-            <table class="table-hover table table-bordered  responsive">
+            <table class="table-hover table table-bordered  responsive table-sm">
                 <tr class="table-success" align="center">		
                     <th scope="col">ID</th>
                     <th scope="col">Ativo</th>
@@ -80,10 +80,10 @@
                 <tr align="center">
                   <td><?php echo $row->NUM_ID_EQUIP?></td>
                   <td><?php echo $row->TXT_ATIVO_EQUIP?></td>
-                  <td><?php echo $row->TXT_RAZAO_CLI?></td>
+                  <td align="left"><?php echo $row->TXT_RAZAO_CLI?></td>
                   <td><?php echo $row->TXT_TIPO_EQUIP?></td>
-                  <td><?php echo $row->TXT_MARCA_EQUIP ?> / <?php echo $row->TXT_MODELO_EQUIP?> / <?php echo $row->TXT_SERIAL_EQUIP?></td>
-                  <td><?php echo $row->TXT_DESCRICAO_EQUIP ?></td>
+                  <td align="left"><?php echo $row->TXT_MARCA_EQUIP ?> / <?php echo $row->TXT_MODELO_EQUIP?> / <?php echo $row->TXT_SERIAL_EQUIP?></td>
+                  <td align="left"><?php echo $row->TXT_DESCRICAO_EQUIP ?></td>
                   <td><?php echo date("d/m/Y  H:i:s",strtotime($row->DTH_REGISTRO_EQUIP)) ?></td>
                   <td>
                       <div class="btn-group dropleft">

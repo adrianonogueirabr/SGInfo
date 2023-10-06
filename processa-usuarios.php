@@ -19,7 +19,7 @@ if($acao == "cadastrar"){
 
 	if($_POST['nome']==null){
 	
-	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=cadastro-usuarios.php'><script type=\"text/javascript\">alert(\"Tente Novamente!\");</script>";
+		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=cadastro-usuarios.php'><script type=\"text/javascript\">alert(\"Tente Novamente!\");</script>";
 		
 	}else{	
 				
@@ -46,40 +46,47 @@ if($acao == "cadastrar"){
 }else if($acao == "salvar"){
 	
 	$id = $_POST['codigo'];
-	$sql = $con->prepare("UPDATE TBL_USUARIO_USU SET TXT_NOME_USU = '$nome', TXT_TELEFONE_USU = '$telefone', TXT_EMAIL_USU = '$email',TXT_SENHA_USU = '$senha', TXT_ATIVO_USU = '$ativo' WHERE NUM_ID_USU = '$id'");
+	$sql = $con->prepare("UPDATE TBL_USUARIO_USU SET TXT_NOME_USU = ?, TXT_TELEFONE_USU = ?, TXT_EMAIL_USU = ?,TXT_SENHA_USU = ?, TXT_ATIVO_USU = ? WHERE NUM_ID_USU = ?");
+	$sql->bindParam(1,$nome);
+	$sql->bindParam(2,$telefone);
+	$sql->bindParam(3,$email);
+	$sql->bindParam(4,$senha);
+	$sql->bindParam(5,$ativo);
+	$sql->bindParam(6,$id);
 
-if(! $sql->execute() )
-{
-  die('Houve um erro no processamento da transação: ' . mysqli_error());
-}
+	if(! $sql->execute() ){
+		die('Houve um erro no processamento da transação: ' . mysqli_error());
+	}
 
-				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";
-	
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";	
 	
 }else if($acao == "salvarnovafilial"){
 	
 	$id = $_POST['codigo'];
 	$sql = $con->prepare("UPDATE TBL_USUARIO_USU SET TBL_EMPRESA_EMP_NUM_ID_EMP = '$empresa' WHERE NUM_ID_USU = '$id'");
+	$sql->bindParam(1,$perfil);
+	$sql->bindParam(2,$id);
 
-if(! $sql->execute() )
-{
-  die('Houve um erro no processamento da transação: ' . mysqli_error());
-}
+	if(! $sql->execute() ){
+	die('Houve um erro no processamento da transação: ' . mysqli_error());
+	}
 
-				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Usuario atualizado com sucesso!\");</script>";
 	
 	
 }else if($acao == "salvarnovoperfil"){
 	
 	$id = $_POST['codigo'];
-	$sql = $con->prepare("UPDATE TBL_USUARIO_USU SET TBL_PERFIL_PER_NUM_ID_PER = '$perfil' WHERE NUM_ID_USU = '$id'");
+	
+	$sql = $con->prepare("UPDATE TBL_USUARIO_USU SET TBL_PERFIL_PER_NUM_ID_PER = ? WHERE NUM_ID_USU = ?");
+	$sql->bindParam(1,$empresa);
+	$sql->bindParam(2,$id);
 
-if(! $sql->execute() )
-{
-  die('Houve um erro no processamento da transação: ' . mysqli_error());
-}
+	if(! $sql->execute() ){
+		die('Houve um erro no processamento da transação: ' . mysqli_error());
+	}
 
-				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";	
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-usuarios.php'><script type=\"text/javascript\">alert(\"Usuario atualizado com sucesso!\");</script>";	
 	
 }else{
 	

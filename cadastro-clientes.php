@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="form-group  col-md-3 col-sm-6"><label for="cpfcnpj">CPF ou CNPJ*</label>
-		<input class="form-control input-lg" name="cpfcnpj" type="number" id="cpfcnpj" required="required" onblur="validarCPFeCNPJ(this.value)"  maxlength="14" title="INFORME O CPF OU CNPJ DO CLIENTE" />
+		<input class="form-control" name="cpfcnpj" type="number" id="cpfcnpj" required="required" onblur="validarCPFeCNPJ(this.value)"  maxlength="14" title="INFORME O CPF OU CNPJ DO CLIENTE" />
 	</div>
 
 	<div class="form-group col-md-6 col-sm-12"><label for="razao">Razão Social*</label>

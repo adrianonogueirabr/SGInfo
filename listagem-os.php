@@ -76,24 +76,24 @@
 	</tr>
   <tr>
       <td>
-          <table class="table-hover table  table-bordered responsive">
+          <table class="table-hover table  table-bordered responsive table-sm">
           <tr class="table-success" align="center">	
-            <th scope="col">Numero</th>
-            <th scope="col">Status</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Atendimento</th>
-            <th scope="col">Cliente</th>
-            <th scope="col">Reclamacao</th>
-            <th scope="col">Total</th>
-            <th scope="col">Desconto</th>
-            <th scope="col">Final</th>
-            <th scope="col">Datas</th>
-            <th scope="col">Opcoes</th>
+            <th scope="col">NUMERO</th>
+            <th scope="col">STATUS</th>
+            <th scope="col">TIPO</th>
+            <th scope="col">ATENDIMENTO</th>
+            <th scope="col">CLIENTE</th>
+            <th scope="col">RECLAMACAO</th>
+            <th scope="col">TOTAL</th>
+            <th scope="col">DESCONTOS</th>
+            <th scope="col">FINAL</th>
+            <th scope="col">DATAS</th>
+            <th scope="col">OPCOES</th>
           </tr>
           <?php
 			while ($row = $res->fetch(PDO::FETCH_OBJ)){			
 		  ?>
-          <?php $dataatual = date("Y-m-d"); if($row->DTA_FIMGARANTIA_OS>=$dataatual){ ?> <tr class="table-warning"> <?php } else {?> <tr title="<?php echo $row->TXT_RECLAMACAO_OS ?>" > <?php } ?>
+          <?php $dataatual = date("Y-m-d"); if($row->DTA_FIMGARANTIA_OS>=$dataatual){ ?> <tr class="table-warning" title="<?php echo $row->TXT_RECLAMACAO_OS ?>" > <?php } else {?> <tr title="<?php echo $row->TXT_RECLAMACAO_OS ?>"  > <?php } ?>
           
             <td align="center"><?php echo $row->NUM_ID_OS ?></td>
             <td align="center"><?php echo $row->TXT_STATUS_OS ?></td>

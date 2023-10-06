@@ -49,7 +49,7 @@
 	</tr>
   <tr>
       <td>
-          <table class="table-hover table  table-bordered responsive">
+          <table class="table-hover table  table-bordered responsive table-sm">
               <tr class="table-success" align="center">		
               <th>Fatura</th>
               <th>Status</th>
