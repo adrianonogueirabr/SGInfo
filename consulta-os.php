@@ -14,17 +14,17 @@
 		    <td>
                 <form name="listagem" action="listagem-os.php" method="post">                
                     <div class="form-check col-md-2">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="C" checked>
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="1" checked>
                         <label class="form-check-label" for="criterio">Pelo ID Cliente </label>
                     </div> 
                     
                     <div class="form-check col-md-2">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="E" checked>
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="2" checked>
                         <label class="form-check-label" for="criterio">Pelo ID Equipamento </label>
                     </div> 
 
                     <div class="form-check col-md-2">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="O" checked>
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="3" checked>
                         <label class="form-check-label" for="criterio">Pelo ID Ordem de Servico </label>
                     </div>
 
@@ -41,12 +41,12 @@
             <hr>
             <form name="listagem" action="listagem-os.php" method="post" >
                     <div class="form-check col-md-2">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="AB" title="PESQUISAR PELA DATA DE ABERTURA" checked>
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="4" title="PESQUISAR PELA DATA DE ABERTURA" checked>
                         <label class="form-check-label" for="criterio">Pela Data Abertura</label>
                     </div>
 
                     <div class="form-check col-md-2">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="EN" title="PESQUISAR PELA DATA DE ENCERRAMENTO">
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="5" title="PESQUISAR PELA DATA DE ENCERRAMENTO">
                         <label class="form-check-label" for="criterio">Pela Data Encerramento</label>
                     </div>
 
@@ -68,7 +68,7 @@
             <form name="listagem" action="listagem-os.php" method="post" >
 
                     <div class="form-check col-md-4">
-                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="S" title="PESQUISAR PELO STATUS DA ORDEM DE SERVICO" checked>
+                        <input class="form-check-input" type="radio" name="criterio" id="criterio" value="6" title="PESQUISAR PELO STATUS DA ORDEM DE SERVICO" checked>
                         <label class="form-check-label" for="criterio">Pelo Status da Ordem de Servico</label>
                     </div>
 

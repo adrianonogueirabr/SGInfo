@@ -6,59 +6,64 @@
 	
       include "conexao.php";
 
-        if($valor = $_POST["valor"]==""){
+        if($valor = $_POST["criterio"]==""){
             $valor = base64_decode($_GET["id_e"]);
-            $criterio = "E";
+            $criterio = "2";
         }else{
-            $valor = $_POST["valor"];
-            $criterio = $_POST["criterio"];
+             $valor = $_POST["valor"];
+             $criterio = $_POST["criterio"];
+             $dtaInicial = $_POST["dtaInicial"];
+             $dtaFinal = $_POST["dtaFinal"];
         }
-      
-      if($criterio == "C"){
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_CLIENTE_CLI_NUM_ID_CLI = '$valor' ORDER BY NUM_ID_OS DESC");
-              $res->execute();
-                  if($res->rowCount()<=0){
-                      echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
-                  }
-      }else if($criterio == "E"){
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP = '$valor' ORDER BY NUM_ID_OS DESC");
-              $res->execute();
-                  if($res->rowCount()<=0){
-                      echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
-                  }
-      }else if($criterio == "O"){
-            $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$valor'");
-                $res->execute();
-                    if($res->rowCount()<=0){
-                        echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
-                    }
-      }if($criterio == "AB"){
-          $dtaInicial = $_POST["dtaInicial"];
-          $dtaFinal = $_POST["dtaFinal"];
 
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE DATE(DTH_ABERTURA_OS) BETWEEN '$dtaInicial' AND '$dtaFinal'  ORDER BY NUM_ID_OS DESC");
-              $res->execute();
-                  if($res->rowCount()<=0){
-                      echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";            
-                  }
-     }if($criterio == "EN"){
-          $dtaInicial = $_POST["dtaInicial"];
-          $dtaFinal = $_POST["dtaFinal"];
+        switch($criterio){
+            case 1:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_CLIENTE_CLI_NUM_ID_CLI = '$valor' ORDER BY NUM_ID_OS DESC");
+                  $res->execute();
+                      if($res->rowCount()<=0){
+                          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
+                      }
+            break;
+            case 2:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TBL_EQUIPAMENTO_EQUIP_NUM_ID_EQUIP = '$valor' ORDER BY NUM_ID_OS DESC");
+                  $res->execute();
+                      if($res->rowCount()<=0){
+                          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
+                      }
+            break;
+            case 3:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$valor'");
+                  $res->execute();
+                        if($res->rowCount()<=0){
+                            echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
+                        }
+            break;
+            case 4:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE DATE(DTH_ABERTURA_OS) BETWEEN '$dtaInicial' AND '$dtaFinal'  ORDER BY NUM_ID_OS DESC");
+                  $res->execute();
+                      if($res->rowCount()<=0){
+                          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";            
+                      }
+            break;
+            case 5:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE DATE(DTH_ENCERRAMENTO_OS) BETWEEN '$dtaInicial' AND '$dtaFinal'  ORDER BY NUM_ID_OS DESC");
+                  $res->execute();
+                      if($res->rowCount()<=0){
+                          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";
+                      }
+            break;
+            case 6:
+                  $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TXT_STATUS_OS = '$valor' ORDER BY NUM_ID_OS DESC");
+                  $res->execute();
+                      if($res->rowCount()<=0){
+                          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
+                      }
+            break;
+            default:
+                echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Erro no processamento das informacoes!\");</script>";
+            break;
+          }
 
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE DATE(DTH_ENCERRAMENTO_OS) BETWEEN '$dtaInicial' AND '$dtaFinal'  ORDER BY NUM_ID_OS DESC");
-              $res->execute();
-                  if($res->rowCount()<=0){
-                      echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";
-                  }
-      }if($criterio == "S"){
-          $res = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE TXT_STATUS_OS = '$valor' ORDER BY NUM_ID_OS DESC");
-          $res->execute();
-              if($res->rowCount()<=0){
-                  echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
-                  }
-      }else if($criterio = ""){	
-          echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Erro no processamento das informacoes!\");</script>";		
-      }
 ?>
 
 <form name="listagem" method="post">
@@ -132,9 +137,8 @@
             <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opcoes</button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-              <?php if(($statusos=="AB") && ($perfil_usuario==00001)){?><!--verifica status da os para editar ou cancelar --> 
-                 <a href="cancelamento-os.php?id=<?php echo $row->NUM_ID_OS ?>">
-                 <a class="dropdown-item" href="cancelamento-os.php?id=<?php echo $row->NUM_ID_OS ?>">Cancelar OS</a>
+              <?php if(($statusos<>'PAGO')&&($statusos<>'FATURADA') && ($perfil_usuario==00001)){?><!--verifica status da os para editar ou cancelar -->                 
+                 <a class="dropdown-item" href="cancelamento-os.php?id=<?php echo base64_encode($row->NUM_ID_OS) ?>">Cancelar OS</a>
               <?php }else{} ?>
 
               <?php if ($statusos<>"AB"){ }else{?><!--verifica status da os para editar ou cancelar -->

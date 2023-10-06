@@ -3,7 +3,7 @@
 <html lang="pt-br">
 <head>
  
- <title>SGOFIC - Sistema de Gestão de Oficina 🚚🚕</title>
+ <title>SGINFO - Sistema de Gestao de Servicos em Informatica</title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <meta name="author" content="Adriano Nogueira - Desenvolvedor">
    <meta content= "SGOFIC - SISTEMA DE GESTÃO DE OFICINAS" name="description">

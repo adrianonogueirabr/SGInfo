@@ -3,7 +3,7 @@
 <html lang="pt-br">
   <head>
  
-  <title>SGINFO - Sistema de Gestao de Informatica 🚚🚕</title>
+  <title>SGINFO - Sistema de Gestao de Servicos em Informatica</title>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <meta name="author" content="Adriano Nogueira - Desenvolvedor">
    <meta content= "SGinfo - Sistema de Gestao de Informatica" name="description">

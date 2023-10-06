@@ -11,10 +11,8 @@ include "verifica.php";
 		$dadosgerais				=$_POST["dadosgerais"];
 		$reclamacao					=$_POST["reclamacao"];
 		$previsao					=$_POST['previsao'];	
-		$km							=$_POST['km'];	
-		
-
-		//$cancelamento				=strtoupper($_POST["cancelamento"]);
+		$km							=$_POST['km'];
+		$cancelamento				=strtoupper($_POST["cancelamento"]);
 
 	//funcao para atualizar valores na ordem de servico			
 	function atualizaValorOS($numeroOS){
@@ -116,15 +114,15 @@ case "cadastrar":
 }
 break;
 case "cancelaros":
-	$id_os = $_GET['os'];
+	$id_os = base64_decode($_GET['os']);
 	//ATUALIZA STATUS DE OS
-		$sql_verifica_os = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$id_os' AND TXT_STATUS_OS = 'AB'");
+		$sql_verifica_os = $con->prepare("SELECT * FROM TBL_ORDEMSERVICO_OS WHERE NUM_ID_OS = '$id_os' AND TXT_STATUS_OS <> 'PAGO' AND TXT_STATUS_OS <> 'FATURADA' AND $perfil_usuario = 1");
 		$sql_verifica_os->execute();
 		if($sql_verifica_os->rowCount()<=0){
-			echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Ordem de Servico precisa estar com status ABERTO!\");</script>";	
+			echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Ordem de Servico nao pode estar FATURADA ou PAGO!\");</script>";	
 		}else{
 
-			$sqlCancelar = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'CA', DTA_ENCERRAMENTO_OS = now(), HOR_ENCERRAMENTO_OS = current_time(), TXT_CANCELAMENTO_OS = '$cancelamento'  WHERE NUM_ID_OS = '$id_os' and TXT_STATUS_OS = 'AB'");	
+			$sqlCancelar = $con->prepare("UPDATE TBL_ORDEMSERVICO_OS SET TXT_STATUS_OS = 'CANCELADA', DTH_ENCERRAMENTO_OS = now(), TXT_CANCELAMENTO_OS = '$cancelamento'  WHERE NUM_ID_OS = '$id_os' AND TXT_STATUS_OS <> 'PAGO' AND TXT_STATUS_OS <> 'FATURADA'");	
 
 			if($sqlCancelar->execute() ){
 				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-os.php'><script type=\"text/javascript\">alert(\"Ordem de Servico cancelada com sucesso!\");</script>";	
