@@ -49,50 +49,41 @@
 ?>
 
 <form name="listagem" method="post">
-<table width="100%">
-  <tr>
-      <td>
-      <?php include "inicial.php" ?><legend><h4>Listagem de Lojas<h4></legend>
+<table  class="table responsive">
+      <tr>
+          <td><?php include "inicial.php" ?></td>
+      </tr>
+      <tr>
+          <td><legend class="p-4 table-primary">Listagem de Lojas<legend></td>		
       </td>
     </tr>
     <tr>
-    <td>
-    <tr>
-      <td>
-      <table width="100%" class="table-hover table table-condensed table-bordered table-striped table-sm">
-        <tr  class="table-primary responsive">			  
-          <th>ID</th>
-          <th>ATIVO</th>
-          <th>CPF/CNPJ</th>
-          <th>RAZAO SOCIAL</th>
-          <th>EMAIL</th>
-          <th>TELEFONE</th>
-          <th colspan="2">TAREFAS</th>
-        </tr>
-        <?php
-		while ($row = $sqlLoja->fetch(PDO::FETCH_OBJ)){			
-		?>        
-        <tr>
-          <td><?php echo $row->NUM_ID_EMP?></div></td>
-          <td><?php echo $row->TXT_ATIVO_EMP?></div></td>
-          <td><?php echo $row->TXT_CPFCNPJ_EMP?></div></td>
-          <td><?php echo $row->TXT_RAZAO_EMP?></div></td>
-          <td><?php echo $row->TXT_EMAIL_EMP?></div></td>
-          <td><?php echo $row->TXT_TELEFONE_EMP?></div></td>
-          <td>
-          <div class="btn-group dropleft">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações</button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="detalhes-filial.php?id=<?php echo $row->NUM_ID_EMP ?>">Detalhes</a>
-              <a class="dropdown-item" href="alterar-filial.php?id=<?php echo $row->NUM_ID_EMP ?>">Alterar</a>
-            </div>
-          </div>
-		  
-		  </td>
-        </tr>
-        <?php
-		}
-		?>
+        <td>
+            <table  class="table-hover table table-bordered table-striped table-sm">
+                <tr class="table-success" align="center">			  
+                    <th>ID</th>
+                    <th>ATIVO</th>
+                    <th>CPF/CNPJ</th>
+                    <th>RAZAO SOCIAL</th>
+                    <th>EMAIL</th>
+                    <th>TELEFONE</th>
+                    <th colspan="2">TAREFAS</th>
+                </tr>
+                <?php
+                while ($row = $sqlLoja->fetch(PDO::FETCH_OBJ)){			
+                ?>        
+                <tr align="center">
+                    <td><?php echo $row->NUM_ID_EMP?></div></td>
+                    <td><?php echo $row->TXT_ATIVO_EMP?></div></td>
+                    <td><?php echo $row->TXT_CPFCNPJ_EMP?></div></td>
+                    <td align="left"><?php echo $row->TXT_RAZAO_EMP?></div></td>
+                    <td><?php echo $row->TXT_EMAIL_EMP?></div></td>
+                    <td><?php echo $row->TXT_TELEFONE_EMP?></div></td>
+                    <td><a class="dropdown-item" href="detalhes-filial.php?id=<?php echo base64_encode($row->NUM_ID_EMP) ?>"><img src="imagens/alterar.png" alt="Clique para Alterar" title="Clique para detalhes" width="26" height="25" /></a></td>
+                </tr>
+              <?php
+              }
+          ?>
     </td>
     </tr>
   </table>

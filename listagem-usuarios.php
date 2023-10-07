@@ -58,45 +58,45 @@
     </tr>
     <tr>
         <td>
-    <table width="100%" class="table-hover table table-bordered  table-sm ">
-        <tr  class="table-success" align="center">	
-          <th>ID</th>          
-          <th>NOME</th>
-          <th>LOGIN</th>
-          <th>TELEFONE</th>
-          <th>PERFIL</th>
-          <th>EMPRESA</th>
-          <th>ATIVO</th>
-          <th>EDITAR</th>
-        </tr>
-        <?php
-		    while ($row = $sqlusuario->fetch(PDO::FETCH_OBJ)){			
-		    ?>        
-        <tr align="center">
-          <td><?php echo $row->NUM_ID_USU?></td>          
-          <td align="left"><?php echo $row->TXT_NOME_USU?></td>
-          <td><?php echo $row->TXT_LOGIN_USU?></td>
-          <td><?php echo $row->TXT_TELEFONE_USU?></td>
-          <td><?php echo $row->TXT_NOME_PER ?></td>
-          <td><?php echo $row->TXT_FANTASIA_EMP?></td>
-          <td><?php echo $row->TXT_ATIVO_USU?></td>
+            <table width="100%" class="table-hover table table-bordered  table-sm ">
+                <tr  class="table-success" align="center">	
+                  <th>ID</th>          
+                  <th>NOME</th>
+                  <th>LOGIN</th>
+                  <th>TELEFONE</th>
+                  <th>PERFIL</th>
+                  <th>EMPRESA</th>
+                  <th>ATIVO</th>
+                  <th>EDITAR</th>
+                </tr>
+                <?php
+                while ($row = $sqlusuario->fetch(PDO::FETCH_OBJ)){			
+                ?>        
+                <tr align="center">
+                  <td><?php echo $row->NUM_ID_USU?></td>          
+                  <td align="left"><?php echo $row->TXT_NOME_USU?></td>
+                  <td><?php echo $row->TXT_LOGIN_USU?></td>
+                  <td><?php echo $row->TXT_TELEFONE_USU?></td>
+                  <td><?php echo $row->TXT_NOME_PER ?></td>
+                  <td><?php echo $row->TXT_FANTASIA_EMP?></td>
+                  <td><?php echo $row->TXT_ATIVO_USU?></td>
 
-          <td>          		
-              <div class="btn-group dropleft">
-               <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações</button>
-                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="alterar-usuario.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Alterar Dados</a>
-                    <a class="dropdown-item" href="alterar-usuarios-filial.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Mudar Loja</a>
-                    <a class="dropdown-item" href="alterar-usuarios-perfil.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Mudar Perfil</a>
-                  </div>
-              </div>
+                  <td>          		
+                      <div class="btn-group dropleft">
+                      <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ações</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="alterar-usuario.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Alterar Dados</a>
+                            <a class="dropdown-item" href="alterar-usuarios-filial.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Mudar Loja</a>
+                            <a class="dropdown-item" href="alterar-usuarios-perfil.php?id=<?php echo base64_encode($row->NUM_ID_USU) ?>">Mudar Perfil</a>
+                          </div>
+                      </div>
 
-          </td>
-          </tr>
-        <?php
-		}
-		?>
-      </table>
+                  </td>
+                  </tr>
+                <?php
+            }
+            ?>
+              </table>
     </td>
     </tr>
   </table>

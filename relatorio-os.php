@@ -252,7 +252,7 @@
             
                 Informo que no dia (<?php if($fimgarantia<>""){echo date("d/m/Y",strtotime($fimgarantia)) ;}?>) ocorrerá termino da garantia de servico.
             
-                Nossa garantia nao cobre mau uso, ou alterações indevidas no veiculo**</p>
+                Nossa garantia nao cobre mau uso, ou alterações indevidas no equipamento**</p>
                 
                 <img src="imagens/assinaturas.png" width="100%" height="80" />
 
