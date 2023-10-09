@@ -15,7 +15,7 @@ if (!$res->execute()) { echo "Error: " . $sql . "<br>" . mysqli_error($con);}
 ?>
 
 <body>
-<form name="cliente" action="alterar-filial.php?id=<?php echo $row->NUM_ID_EMP ?>" method="post">
+<form name="cliente" action="processa-filial.php?acao=salvar" method="post">
 <table width="100%" class="table responsive">
     <tr>
         <td> <?php include "inicial.php"?></td>
@@ -27,7 +27,7 @@ if (!$res->execute()) { echo "Error: " . $sql . "<br>" . mysqli_error($con);}
         <td> 
             <div class="form-row"> 
                 <div class="form-group col-md-4 col-sm-6"><label>ID</label>
-                    <input type="text" readonly="readonly" title="ID DO CLIENTE NO SISTEMA" value="<?php echo $row->NUM_ID_EMP; ?>" class="form-control"  />
+                    <input type="text" name="id" id="id" readonly="readonly" title="ID DO CLIENTE NO SISTEMA" value="<?php echo $row->NUM_ID_EMP; ?>" class="form-control"  />
                 </div>
 
                 <div class="form-group col-md-4 col-sm-6"><label>Pessoa</label>	
@@ -39,11 +39,11 @@ if (!$res->execute()) { echo "Error: " . $sql . "<br>" . mysqli_error($con);}
                 </div>
                     
                 <div class="form-group col-md-6 col-sm-6"><label for="razao">Razao Social</label>
-                <input name="razao" id="razao"  type="text" value="<?php echo $row->TXT_RAZAO_EMP; ?>" title="NOME/RAZAO SOCIAL DO CLIENTE"   class="form-control"  />
+                    <input name="razao" id="razao"  type="text" value="<?php echo $row->TXT_RAZAO_EMP; ?>" title="NOME/RAZAO SOCIAL DO CLIENTE"   class="form-control"  />
                 </div>
 
                 <div class="form-group col-md-6 col-sm-6"><label for="fantasia">Nome Fantasia</label>
-                <input name="fantasia" id="fantasia"  type="text"   value="<?php echo $row->TXT_FANTASIA_EMP; ?>" title="NOME FANTASIA" class="form-control"  />
+                    <input name="fantasia" id="fantasia"  type="text"   value="<?php echo $row->TXT_FANTASIA_EMP; ?>" title="NOME FANTASIA NOME QUE APARECE NOS RELATORIOS" class="form-control"  />
                 </div>
                 
                 <div class="form-group col-md-3 col-sm-6"><label>Fundacao</label>
@@ -90,49 +90,49 @@ if (!$res->execute()) { echo "Error: " . $sql . "<br>" . mysqli_error($con);}
                     <input type="text" class="form-control" name="cidade" id="cidade" value="<?php echo $row->TXT_CIDADE_EMP; ?>" title="CIDADE DO CLIENTE" />
                 </div>
 
-                <div class="form-group col-md-3 col-sm-6">
-                    <p class="font-weight-bold">ESTADO
-                    <input name="id_" type="text" title="ESTADO DO CLIENTE NO SISTEMA" value="<?php echo $row->TXT_ESTADO_EMP; ?>" readonly="readonly" class="form-control" />    
+                <div class="form-group col-md-3 col-sm-6"><label for="estado">Estado</label>
+                    <input name="estado" id="estado" type="text" title="ESTADO DO CLIENTE NO SISTEMA" value="<?php echo $row->TXT_ESTADO_EMP; ?>"  class="form-control" />    
                 </div>
 
-                <div class="form-group col-md-3 col-sm-6">
-                    <p class="font-weight-bold">INSC. MUNICIPAL
-                    <input name="im" type="text" class="form-control" readonly="readonly" value="<?php echo $row->TXT_IM_EMP; ?>" title="INSCRICAO MUNICIPAL CASO POSSUA" />
+                <div class="form-group col-md-3 col-sm-6"><label for="im">Inscricao Municipal</label>
+                    <input name="im" id="im" type="text" class="form-control" value="<?php echo $row->TXT_IM_EMP; ?>" title="INSCRICAO MUNICIPAL CASO POSSUA" />
                 </div>
                 
-                <div class="form-group col-md-3 col-sm-6">
-                    <p class="font-weight-bold">INSC. ESTADUAL
-                    <input  type="text" class="form-control" readonly="readonly" value="<?php echo $row->TXT_IE_EMP; ?>" title="INSCRICAO ESTADUAL CASO POSSUA"/>
+                <div class="form-group col-md-3 col-sm-6"><label for="ie">Inscricao Estadual</label>
+                    <input  type="text" class="form-control" name="ie" id="ie" value="<?php echo $row->TXT_IE_EMP; ?>" title="INSCRICAO ESTADUAL CASO POSSUA"/>
                 </div>
                 
-                <div class="form-group col-md-4 col-sm-6">
-                    <p class="font-weight-bold">REGISTRO GERAL
-                    <input name="rg" type="text" readonly="readonly" class="form-control"  value="<?php echo $row->TXT_RG_EMP; ?>" title="RG"/>
-                </div>
-                
-                <div class="form-group col-md-4 col-sm-6">
-                    <p class="font-weight-bold">ULTIMA ALTERACAO
-                    <input  class="form-control" type="text" readonly="readonly" title="DATA DA ULTIMA ALTERACAO " value="<?php echo date("d/m/Y",strtotime($row->DTA_ALTERACAO_EMP)); ?>"/></p>
+                <div class="form-group col-md-3 col-sm-6"><label for="rg">Registro Geral</label>
+                    <input name="rg" id="rg" type="text" class="form-control"  value="<?php echo $row->TXT_RG_EMP; ?>" title="RG"/>
                 </div>
 
-                <div class="form-group col-md-4 col-sm-6">
-                    <p class="font-weight-bold">CADASTRADO EM
-                    <input name="registro_" class="form-control" type="text" readonly="readonly" title="DATA DE REGISTRO" value="<?php echo date("d/m/Y", strtotime($row->DTA_REGISTRO_EMP)); ?>" /></p>
-                </div>
-                
-                <div class="form-group col-md-6 col-sm-6">
-                    <p class="font-weight-bold">ATIVO: </label>
-                    <?php if($row->TXT_ATIVO_EMP=='S'){ ?>
-                        <input name="id_" type="text" id="ativo" value="SIM" size="20" maxlength="20" readonly="readonly" class="form-control" /></p>
-                    <?php }else if($row->TXT_ATIVO_EMP=='N'){ ?>
-                        <input name="id_" type="text" id="ativo" value="NAO" size="20" maxlength="20" readonly="readonly" class="form-control" /></p>
-                    <?php } ?>     
-                <div>
+                <div class="form-group col-md-3 col-sm-6"><label for="multa">Multa</label>
+                    <input name="multa" id="multa" type="int" class="form-control"  value="<?php echo $row->VAL_MULTA_EMP ?>" title="VALOR DE MULTA EX: 5.50"/>
                 </div>
 
-                <div class="form-group col-md-3 col-sm-12">
-                    <input type="submit" name="Alterar"  value="Alterar" class="btn btn-danger btn-block"  />
-                </div>        
+                <div class="form-group col-md-3 col-sm-6"><label for="juros">Juros</label>
+                    <input name="juros" id="juros" type="text" class="form-control"  value="<?php echo $row->VAL_JUROS_EMP; ?>" title="VALOR DE JUROS EX: 1.52"/>
+                </div>
+
+                <div class="form-group col-md-3 col-sm-6"><label for="ativo">Ativo</label>        
+                    <select name="ativo" id="ativo" class="form-control" required>		    
+                        <option value="SIM">SIM</option>
+                        <option value="NAO">NAO</option>
+                    </select>
+                </div> 
+                
+                <div class="form-group col-md-6 col-sm-6"><label>Data de Registro</label>
+                    <input name="registro_" class="form-control" type="text" readonly="readonly" title="DATA DE REGISTRO" value="<?php echo date("d/m/Y", strtotime($row->DTA_REGISTRO_EMP)); ?>" />
+                </div>
+                
+                <div class="form-group col-md-6 col-sm-6"><label>Ultima Alteracao</label>
+                    <input  class="form-control" type="text" readonly="readonly" title="DATA DA ULTIMA ALTERACAO " value="<?php echo date("d/m/Y",strtotime($row->DTA_ALTERACAO_EMP)); ?>"/>
+                </div>                            
+
+                <div class="form-group col-md-2 col-sm-12">
+                    <input type="submit" name="Alterar Dados"  value="Salvar Dados" class="btn btn-outline-danger"  />
+                </div> 
+                    
                 <?php
                     }
                 ?>

@@ -6,9 +6,8 @@ include "verifica.php";
 		$razao		=strtoupper($_POST["razao"]);
 		$fantasia	=strtoupper($_POST["fantasia"]);
 		$nascimento	=$_POST['data_fundacao'];
-		$telefone	=$_POST["telefone"];
-		$ramal		=$_POST["ramal"];
-		$fax		=$_POST["fax"];	
+		$telefone	=$_POST["telefone"];		
+		$logo		=$_POST["logo"];	
 		$email		=strtolower($_POST["email"]);
 		$site		=strtolower($_POST["site"]);
 		$logradouro	=strtoupper($_POST["logradouro"]);
@@ -42,16 +41,60 @@ if($acao == "cadastrar"){
 
 		if($sql->rowCount()>0){
 
-				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL='><script type=\"text/javascript\">alert(\"Esse CPF/CNPJ ja foi cadastrado!\");</script>";
+				echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL='><script type=\"text/javascript\">alert(\"CPF/CNPJ ja foi cadastrado!\");</script>";
 				echo "<script language='javascript'>history.back()</script>";
 			
 		}else{	
 		
-				$sql = $con->prepare("INSERT INTO TBL_EMPRESA_EMP VALUES (NULL,'$pessoa','$cpfcnpj','$razao','$fantasia','$nascimento','$telefone','$ramal','$fax','$email','$site','$cep','$logradouro','$numero','$complemento','$bairro','$cidade','$estado',	'$im','$ie','$rg','$multa','$juros',now(),now(),'S')"); 
+				$sqlInsert = $con->prepare("INSERT INTO TBL_EMPRESA_EMP (`NUM_ID_EMP`, `TXT_PESSOA_EMP`, `TXT_CPFCNPJ_EMP`, `TXT_RAZAO_EMP`, `TXT_FANTASIA_EMP`, `DTA_FUNDACAO_EMP`, `TXT_TELEFONE_EMP`, `TXT_LOGO_EMP`, 
+				
+				`TXT_EMAIL_EMP`, `TXT_SITE_EMP`, `NUM_CEP_EMP`, `TXT_LOGRADOURO_EMP`, `NUM_NUMERO_EMP`, `TXT_COMPLEMENTO_EMP`, `TXT_BAIRRO_EMP`, `TXT_CIDADE_EMP`, `TXT_ESTADO_EMP`, `TXT_IM_EMP`, `TXT_IE_EMP`, 
+				
+				`TXT_RG_EMP`, `VAL_MULTA_EMP`, `VAL_JUROS_EMP`, `DTA_REGISTRO_EMP`, `DTA_ALTERACAO_EMP`, `TXT_ATIVO_EMP`) 
+				
+				VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),now(),'SIM')"); 
 		
-				if(! $sql->execute() )
-				{
-				  die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+				$sqlInsert->bindParam(1,$pessoa);
+				$sqlInsert->bindParam(2,$cpfcnpj);
+				$sqlInsert->bindParam(3,$razao);
+				$sqlInsert->bindParam(4,$fantasia);
+				$sqlInsert->bindParam(5,$nascimento);
+				$sqlInsert->bindParam(6,$telefone);
+				$sqlInsert->bindParam(7,$logo);
+				$sqlInsert->bindParam(8,$email);
+				$sqlInsert->bindParam(9,$site);
+				$sqlInsert->bindParam(10,$cep);
+				$sqlInsert->bindParam(11,$logradouro);
+				$sqlInsert->bindParam(12,$numero);
+				$sqlInsert->bindParam(13,$complemento);
+				$sqlInsert->bindParam(14,$bairro);
+				$sqlInsert->bindParam(15,$cidade);
+				$sqlInsert->bindParam(16,$estado);
+				$sqlInsert->bindParam(17,$im);
+				$sqlInsert->bindParam(18,$ie);
+				$sqlInsert->bindParam(19,$rg);
+				$sqlInsert->bindParam(20,$multa);
+				$sqlInsert->bindParam(21,$juros);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+				if(! $sqlInsert->execute() ){
+				 	die('Houve um erro no processamento da transação: ' . mysqli_error($con));
 				}
 		
 				$result = $con->prepare("SELECT MAX(NUM_ID_EMP) FROM TBL_EMPRESA_EMP");
@@ -71,14 +114,45 @@ if($acao == "cadastrar"){
 	$id = $_POST['id'];
 	$ativo = $_POST['ativo'];
 
-	$sql = $con->prepare("UPDATE TBL_EMPRESA_EMP SET TXT_PESSOA_EMP = '$pessoa',TXT_CPFCNPJ_EMP = '$cpfcnpj', TXT_RAZAO_EMP = '$razao', TXT_FANTASIA_EMP = '$fantasia', DTA_FUNDACAO_EMP = '$nascimento',  TXT_TELEFONE_EMP = '$telefone', TXT_FAX_EMP = '$fax', TXT_EMAIL_EMP = '$email', TXT_SITE_EMP = '$site', NUM_CEP_EMP = '$cep', TXT_LOGRADOURO_EMP = '$logradouro', NUM_NUMERO_EMP = '$numero', TXT_COMPLEMENTO_EMP = '$complemento', TXT_BAIRRO_EMP = '$bairro', TXT_CIDADE_EMP = '$cidade', TXT_ESTADO_EMP = '$estado', TXT_IM_EMP = '$im', TXT_IE_EMP = '$ie', TXT_RG_EMP = '$rg',  DTA_ALTERACAO_EMP = now(),TXT_ATIVO_EMP = '$ativo' WHERE NUM_ID_EMP = '$id'");
+	$sqlUpdate = $con->prepare("UPDATE TBL_EMPRESA_EMP SET TXT_RAZAO_EMP = ?, TXT_FANTASIA_EMP = ?, TXT_TELEFONE_EMP = ?, TXT_LOGO_EMP = ?, TXT_EMAIL_EMP = ?, TXT_SITE_EMP = ?,
+	
+	NUM_CEP_EMP = ?, TXT_LOGRADOURO_EMP = ?, NUM_NUMERO_EMP = ?, TXT_COMPLEMENTO_EMP = ?, TXT_BAIRRO_EMP = ?,TXT_CIDADE_EMP = ?, TXT_ESTADO_EMP = ?, 
+	
+	TXT_IM_EMP = ?, TXT_IE_EMP = ?, TXT_RG_EMP = ?,  DTA_ALTERACAO_EMP = now(),VAL_JUROS_EMP = ?,VAL_MULTA_EMP = ?,TXT_ATIVO_EMP = ? WHERE NUM_ID_EMP = ?");
 
-if(! $sql->execute() )
-{
-  die('Houve um erro no processamento da transação: ' . mysqli_error($con));
-}
+	$sqlUpdate->bindParam(1, $razao);
+	$sqlUpdate->bindParam(2, $fantasia);
+	$sqlUpdate->bindParam(3, $telefone);
+	$sqlUpdate->bindParam(4, $logo);
+	$sqlUpdate->bindParam(5, $email);
+	$sqlUpdate->bindParam(6, $site);
+	$sqlUpdate->bindParam(7, $cep);
+	$sqlUpdate->bindParam(8, $logradouro);
+	$sqlUpdate->bindParam(9, $numero);
+	$sqlUpdate->bindParam(10, $complemento);
+	$sqlUpdate->bindParam(11, $bairro);
+	$sqlUpdate->bindParam(12, $cidade);
+	$sqlUpdate->bindParam(13, $estado);
+	$sqlUpdate->bindParam(14, $im);
+	$sqlUpdate->bindParam(15, $ie);
+	$sqlUpdate->bindParam(16, $rg);
+	$sqlUpdate->bindParam(17, $juros);
+	$sqlUpdate->bindParam(18, $multa);
+	$sqlUpdate->bindParam(19, $ativo);
+	$sqlUpdate->bindParam(20, $id);
 
-		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-filial.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";	
+
+
+
+
+
+	
+
+	if(! $sqlUpdate->execute() ){
+	die('Houve um erro no processamento da transação: ' . mysqli_error($con));
+	}
+
+	echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-filial.php'><script type=\"text/javascript\">alert(\"Registro atualizado com sucesso!\");</script>";	
 	
 }else{
 	
