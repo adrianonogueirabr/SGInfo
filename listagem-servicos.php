@@ -55,11 +55,11 @@
         <?php
 		    while ($row = $sqlServico->fetch(PDO::FETCH_OBJ)){			
 		    ?>        
-        <tr>
+        <tr align="center">
           <td><?php echo $row->NUM_ID_SER?></td>
           <td><?php echo $row->TXT_ATIVO_SER?></td>
-          <td><?php echo $row->TXT_NOME_SER?></td>
-          <td><?php echo $row->TXT_DESCRICAO_SER?></td>
+          <td align="left"><?php echo $row->TXT_NOME_SER?></td>
+          <td align="left"><?php echo $row->TXT_DESCRICAO_SER?></td>
           <td><?php echo $row->NUM_DURACAO_SER?></td>
           <td>R$<?php echo number_format($row->VAL_FISICA_SER,2)?></td>
           <td>R$<?php echo number_format($row->VAL_JURIDICA_SER,2)?></td>

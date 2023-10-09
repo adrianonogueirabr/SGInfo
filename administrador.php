@@ -59,7 +59,17 @@
                     <a class="dropdown-item" href="cadastro-servicos.php">CADASTRO DE SERVIÇO</a>
                     <a class="dropdown-item" href="consulta-servicos.php">CONSULTA DE SERVIÇO</a>
                   </div>
-                </li>      <li class="nav-item dropdown">
+                </li>  
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    PECAS
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="cadastro-pecas.php">CADASTRO DE PECAS</a>
+                    <a class="dropdown-item" href="consulta-pecas.php">CONSULTA DE PECAS</a>
+                  </div>
+                </li>         
+                <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     ORDEM DE SERVICOS
                   </a>
