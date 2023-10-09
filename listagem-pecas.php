@@ -46,11 +46,10 @@
           <th>ATIVO</th>
           <th>NOME</th>
           <th>CODIGO</th>
-          <th>ULTIMA</th>
-          <th>VENDA</th>
-          <th>CUSTO</th>
-          <th>ACUMULADO</th>
-          <th>REGISTRO</th>
+          <th>ULTIMA COMPRA</th>
+          <th>VALOR VENDA</th>
+          <th>CUSTO MEDIO</th>
+          <th>ACUMULADO</th>          
           <th>OPCOES</th>
         </tr>
         <?php
@@ -65,7 +64,6 @@
           <td>R$<?php echo number_format($row->VAL_VALOR_VENDA_PEC,2)?></td>
           <td>R$<?php echo number_format($row->VAL_CUSTO_MEDIO_PEC,2)?></td>
           <td>R$<?php echo number_format($row->VAL_TOTAL_ACUMULADO_PEC,2)?></td>
-          <td><?php echo $row->DTH_REGISTRO_PEC?></td>
           <td><a href="detalhes-pecas.php?id=<?php echo base64_encode($row->NUM_ID_PEC) ?>"><img src="imagens/alterar.png" alt="Clique para Alterar" title="Clique para detalhes" width="26" height="25" /></a></td>
       <?php
 		}
