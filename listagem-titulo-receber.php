@@ -102,7 +102,7 @@
               ?>
               <td>R$ <?php echo number_format($TotalJurosMulta,2) ?></td>
               <td>R$ <?php echo number_format($row->VAL_FINAL_TR,2) ; $valorAcumulado = $valorAcumulado + $row->VAL_FINAL_TR ?></td>
-              <td align="center">          
+              <td align="left">          
                     <div class="form-group col-md-2 col-sm-12">
                         <div class="btn-group dropleft">
                           <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acoes</button>
@@ -110,6 +110,7 @@
                               <?php if($statustitulo!='ABERTO'){}else{ ?>                               
                                   <a class="dropdown-item" href="dados-recebimento.php?valor=<?php echo $row->NUM_ID_TR ?>&criterio=TR">Receber Titulo</a>
                                   <a class="dropdown-item" href="dados-recebimento.php?valor=<?php echo $row->NUM_ID_TR ?>&criterio=TRAD">Baixar C/ Saldo</a>  
+                                  <a class="dropdown-item" href="alterar-vencimento-titulo.php?id=<?php echo base64_encode($row->NUM_ID_TR) ?>">Alterar Vencimento</a>
                               <?php } ?>
                                 <a class="dropdown-item" href="impressao-titulo-re.php?id=<?php echo $row->NUM_ID_TR ?>" target="_blank">Imprimir Titulo</a>
                           

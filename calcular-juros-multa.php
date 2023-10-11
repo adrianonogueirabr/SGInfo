@@ -1,11 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<link href="css/bootstrap.css" rel="stylesheet" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Atualizacao de Juros e Multas no Sistema</title>
-</head>
-
 <body>
 <?php 
 	include "conexao.php";
@@ -14,7 +8,7 @@
     if(!$sqlTitulo->execute()){echo 'Houve um erro no processamento da transacao ' . mysqli_error();}
 
     if($sqlTitulo->rowCount()==0){
-		echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-titulo-receber.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
+		    echo "<META HTTP-EQUIV=REFRESH CONTENT='0; URL=consulta-titulo-receber.php'><script type=\"text/javascript\">alert(\"Dados nao encontrados!\");</script>";		
     }
 ?>
 
