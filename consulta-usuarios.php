@@ -13,15 +13,16 @@
 	<tr>
 		<td>
 			<div class="form-check">
-					<input class="form-check-input" type="radio" name="criterio" id="criterio" value="C" >
-					<label class="form-check-label" for="criterio">Pesquisar pelo ID</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="criterio" id="criterio" value="R" checked>
-					<label class="form-check-label" for="criterio">Pesquisar pelo Nome</label>
-				</div>
+				<input class="form-check-input" type="radio" name="criterio" id="criterio" value="C" >
+				<label class="form-check-label" for="criterio">Pesquisar pelo ID</label>
+			</div>
 
-				<div class="form-row"> 
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="criterio" id="criterio" value="R" checked>
+				<label class="form-check-label" for="criterio">Pesquisar pelo Nome</label>
+			</div>
+
+			<div class="form-row"> 
 			<div class="form-group col-md-4 ">
 				<input class="form-control"  type="text"   name="valor" id="valor" required="required" placeholder="Informe Parametro se Nome incluir % no final"  />
 			</div>
@@ -31,7 +32,7 @@
 			</div>
 
 			<div class="form-group col-md-2 col-sm-12">
-				<a href="cadastro-usuarios.php" class="btn btn-outline-success btn-block" role="button" aria-pressed="true">Registrar Servico</a>
+				<a href="cadastro-usuarios.php" class="btn btn-outline-success btn-block" role="button" aria-pressed="true">Registrar Usuario</a>
 			</div>	
 			</div>
 

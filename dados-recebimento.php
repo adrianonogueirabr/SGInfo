@@ -147,9 +147,9 @@ if($criterio == 'TR'){
                           $id_cliente =       $row->TBL_CLIENTE_CLI_NUM_ID_CLI;
                           $razaoCLiente = 		$row->TXT_RAZAO_CLI;
                           $saldoCLiente =     $row->VAL_SALDO_CLI;
-                          $idOs =             $row->TXT_REFERENTE_TR;	
-                          $valFinal =         $row->VAL_FINAL_TR;
+                          $idOs =             $row->TXT_REFERENTE_TR;
                           $valJurosMulta =    $row->VAL_JUROS_TR + $row->VAL_MULTA_TR;
+                          $valFinal =         $row->VAL_FINAL_TR;
                           $vencimento =       $row->DTA_VENCIMENTO_TR;	
                     }							
                 ?>

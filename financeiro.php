@@ -44,6 +44,15 @@
                   </div>
                 </li>
                 <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    CONTRATO
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="listagem-cm.php">CONSULTAR</a>
+                  <a class="dropdown-item" href="cadastro-cm.php">CADASTRO</a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">FINANCEIRO</a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="consulta-clientes.php">RECEBER ADIANTAMENTO</a>
