@@ -51,7 +51,10 @@
                     <?php } ?> 
         </td>          
     </tr>
-</table>            
+</table>
+<table width="100%" class="table-responsive"> 
+    <tr>
+        <td>            
         <legend align="center"><h3>Impressao de Ordem de Servico</h3></legend>
             <h4>Dados de Cliente</h4>             
                 <?php	//seleciona nome e telefone do cliente da ordem de servico
@@ -157,7 +160,9 @@
                         <input title="VALOR FINAL A SER PAGO" value="R$<?php echo number_format($rowOs->VAL_FINAL_OS,2) ?>" readonly="readonly" class="form-control" readonly /> </div> 
                     <?php	//CAPTURA DATA INICIO E ENCERRAMENTO DA ORDEM DE SERVICO
                     $data_inicio = $rowOs->DTH_ABERTURA_OS; $data_final =  $rowOs->DTH_ENCERRAMENTO_OS; $fimgarantia = $rowOs->DTA_FIMGARANTIA_OS; } ?>    
-           
+                   </td>          
+    </tr>
+</table>
             <div class="table-responsive">      
                 <table class=" table table-striped table-bordered table-sm">               
                         <thead class="thead-dark">      

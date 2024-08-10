@@ -481,7 +481,7 @@ case "encerraros":
 		if($statusOs == 'ANDAMENTO'){		
 		
 			//verificar se existem servicos em aberto
-				$sqlStatusServicoOs = $con->prepare("SELECT * FROM `TBL_ITEM_SERVICO_OS` WHERE `TXT_STATUS_SERVICO_OS` <> 'REALIZADO'  AND `TBL_ORDEMSERVICO_OS_NUM_ID_OS` = ? OR TBL_TECNICO_TEC_NUM_ID_TEC = 0");
+				$sqlStatusServicoOs = $con->prepare("SELECT * FROM `TBL_ITEM_SERVICO_OS` WHERE `TXT_STATUS_SERVICO_OS` <> 'REALIZADO'  AND `TBL_ORDEMSERVICO_OS_NUM_ID_OS` = ? ");
 				$sqlStatusServicoOs->bindParam(1,$id_os);
 				
 				if(! $sqlStatusServicoOs->execute()){

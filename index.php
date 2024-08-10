@@ -24,7 +24,7 @@
       <td  align="center"><img src="imagens/logo techfy.png" alt="" width="350" height="200" /></td>
     </tr>
     <tr>
-      <td height="50"><legend><h6>Seja Bem Vindo</legend></h6</td>
+      <td height="50"><legend><h6>Seja Bem Vindo<?php echo date('d/m/Y',strtotime('+2 Monday')); ?></legend></h6</td>
     </tr>
     <tr>
       <td height="50">
